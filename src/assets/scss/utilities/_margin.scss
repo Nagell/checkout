@@ -1,0 +1,61 @@
+/**
+ * Margin default gutter. Use a number for a simple size
+ * and a map for responsive.
+ *
+ * Type: Number / Map
+ */
+
+$iota-utils-margin-default: $iota-global-gutter-default;
+
+/**
+ * Margin extra gutters.
+ *
+ * Type: Map
+ */
+
+$iota-utils-margin-extra: (
+	-size-0: 0,
+	-size-10: 10px,
+	-size-15: 15px,
+	-size-20: 20px,
+	-size-30: 30px,
+	-size-40: 40px,
+	-size-60: 60px,
+	-size-80: 80px,
+	-size-100: 100px,
+	-size-half-standard: 0.5 * $iota-global-gutter-default,
+	-size-standard: $iota-global-gutter-default
+);
+
+/**
+ * Enables / Disables responsive classes
+ *
+ * Type: Boolean
+ */
+
+$iota-utils-margin-res: false;
+
+/**
+ * Breakpoints map. Overrides the breakpoints map only
+ * for margin utility.
+ *
+ * Type: Map
+ */
+
+$iota-utils-margin-breakpoints: $iota-global-breakpoints;
+
+/**
+ * Namespace classes
+ *
+ * Type: String
+ */
+
+$iota-utils-margin-namespace: 'm';
+$iota-utils-margin-top-name: 't';
+$iota-utils-margin-right-name: 'r';
+$iota-utils-margin-bottom-name: 'b';
+$iota-utils-margin-left-name: 'l';
+$iota-utils-margin-vertical-name: 'v';
+$iota-utils-margin-horizontal-name: 'h';
+
+@import 'node_modules/iotacss/utilities/margin';

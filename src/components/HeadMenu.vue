@@ -1,6 +1,8 @@
 <template>
 	<div>
-		<div class="" />
+		<div class="c-head-menu">
+			text
+		</div>
 	</div>
 </template>
 

@@ -1,0 +1,55 @@
+@font-face {
+	font-family: 'Roboto';
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+
+	src: url($path-assets-global-fonts+'Roboto/Roboto-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Roboto';
+	font-weight: 500;
+	font-style: normal;
+	font-stretch: normal;
+
+	src: url($path-assets-global-fonts+'Roboto/Roboto-Medium.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Roboto';
+	font-weight: bold;
+	font-style: normal;
+	font-stretch: normal;
+
+	src: url($path-assets-global-fonts+'Roboto/Roboto-Bold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Roboto';
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: condensed;
+
+	src: url($path-assets-global-fonts+'Roboto_Condensed/RobotoCondensed-Regular.ttf')
+		format('truetype');
+}
+
+@font-face {
+	font-family: 'Roboto';
+	font-weight: 300;
+	font-style: normal;
+	font-stretch: condensed;
+
+	src: url($path-assets-global-fonts+'Roboto_Condensed/RobotoCondensed-Light.ttf')
+		format('truetype');
+}
+
+@font-face {
+	font-family: 'Roboto';
+	font-weight: bold;
+	font-style: normal;
+	font-stretch: condensed;
+
+	src: url($path-assets-global-fonts+'Roboto_Condensed/RobotoCondensed-Bold.ttf') format('truetype');
+}

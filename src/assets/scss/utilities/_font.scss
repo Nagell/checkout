@@ -1,0 +1,51 @@
+// Font size Utility
+
+// Usage sample:
+
+//  <div class="u-bgcolor-blue u-bdradius-2"></div>
+//  <div class="u-bgcolor-blue u-bdradius-small"></div>
+
+$iota-utils-fontcolor-names: $checkout-colors !default;
+
+$iota-utils-font-size: (
+	-xxs: $iota-global-font-size-xxs,
+	-xs: $iota-global-font-size-xs,
+	-s: $iota-global-font-size-s,
+	-m: $iota-global-font-size-m,
+	-ml: $iota-global-font-size-ml,
+	-l: $iota-global-font-size-l,
+	-xl: $iota-global-font-size-xl,
+	-xxl: $iota-global-font-size-xxl,
+	-xxxl: $iota-global-font-size-xxxl
+) !default;
+
+// Helper Local Variables
+
+$iota-utils-display: true;
+
+$iota-font-color-namespace: 'fcolor' !default;
+$iota-font-size-namespace: 'fsize' !default;
+
+// Generate font sizes
+
+@mixin _iota-utils-font-colors {
+	@each $color, $value in $iota-utils-fontcolor-names {
+		.#{$iota-global-utilities-namespace + $iota-font-color-namespace + '-' + $color} {
+			color: $value;
+		}
+	}
+}
+
+@include _iota-utils-font-colors;
+
+// Generate font colors
+
+@mixin _iota-utils-font-size {
+	@each $name, $fontSize in $iota-utils-font-size {
+		.#{$iota-global-utilities-namespace + $iota-font-size-namespace + $name} {
+			font-size: #{$fontSize};
+		}
+	}
+}
+
+@include _iota-utils-font-size;

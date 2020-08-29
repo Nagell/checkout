@@ -1,0 +1,33 @@
+// Layout Component
+
+// Options
+
+$component-nav: true;
+$component-nav-namespace: 'head-menu' !default;
+
+$component-nav-opt-font-color: #fff !default;
+
+$component-nav-opt-head-side-width: 250px;
+
+$component-nav-opt-font-face: $settings-common-opt-font-face;
+
+$component-nav-opt-margin: $iota-global-gutter-default !default;
+$component-nav-opt-padding: $iota-global-gutter-default !default;
+
+// Helper Local Variables
+
+$component-nav-namespace-var-nav: $iota-global-components-namespace + $component-nav-namespace;
+$selector: $component-nav-namespace-var-nav;
+
+// Style Properties
+
+// --------------------------------------
+// Header Navigation
+// --------------------------------------
+
+.#{$selector} {
+	display: flex;
+	height: 20px;
+	background-color: map_get($checkout-colors, s4);
+	color: map_get($checkout-colors, w);
+}
