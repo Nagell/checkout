@@ -37,6 +37,7 @@ $selector: $component-checkout-namespace-var-checkout;
 
 	&__payments {
 		position: relative;
+
 		width: 100%;
 		height: $component-checkout-opt-payment-height;
 	}
@@ -44,6 +45,7 @@ $selector: $component-checkout-namespace-var-checkout;
 	&__payments-tabs {
 		position: absolute;
 		bottom: 100%;
+
 		width: 100%;
 
 		> ul {
@@ -61,10 +63,9 @@ $selector: $component-checkout-namespace-var-checkout;
 				justify-content: center;
 
 				width: $component-checkout-opt-tab-width;
-
 				height: calc(100% - 0.25 * $component-checkout-opt-margin);
-				margin-left: 0.25 * $component-checkout-opt-margin;
 				margin-bottom: 0.25 * $component-checkout-opt-margin;
+				margin-left: 0.25 * $component-checkout-opt-margin;
 
 				list-style: none;
 
@@ -75,8 +76,9 @@ $selector: $component-checkout-namespace-var-checkout;
 				background-color: map-get($checkout-colors, s2);
 
 				&.active {
-					background-color: map-get($checkout-colors, s4);
 					margin-bottom: 0;
+
+					background-color: map-get($checkout-colors, s4);
 				}
 			}
 		}
@@ -125,10 +127,10 @@ $selector: $component-checkout-namespace-var-checkout;
 
 			height: 5 * $iota-global-gutter-default;
 			padding: 0 4 * $component-checkout-opt-padding;
-			outline: none;
 
 			color: map-get($checkout-colors, w);
 			border: 3px solid map-get($checkout-colors, w);
+			outline: none;
 			background-color: map-get($checkout-colors, p1);
 
 			&:hover {
@@ -165,8 +167,8 @@ $selector: $component-checkout-namespace-var-checkout;
 		}
 
 		&__pay {
-			height: auto;
 			width: 100%;
+			height: auto;
 		}
 	}
 }

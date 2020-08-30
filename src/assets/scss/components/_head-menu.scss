@@ -60,8 +60,8 @@ $selector: $component-head-menu-namespace-var-head-menu;
 
 				width: $component-head-menu-opt-tab-width;
 				height: calc(100% - 0.25 * $component-head-menu-opt-margin);
-				margin-left: 0.25 * $component-head-menu-opt-margin;
 				margin-bottom: 0.25 * $component-head-menu-opt-margin;
+				margin-left: 0.25 * $component-head-menu-opt-margin;
 				padding: $component-head-menu-opt-padding;
 
 				list-style: none;
@@ -94,8 +94,9 @@ $selector: $component-head-menu-namespace-var-head-menu;
 			}
 
 			> li.active {
-				background-color: map-get($checkout-colors, s1);
 				margin-bottom: 0;
+
+				background-color: map-get($checkout-colors, s1);
 			}
 		}
 	}
