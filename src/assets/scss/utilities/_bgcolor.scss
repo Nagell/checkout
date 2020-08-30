@@ -19,11 +19,11 @@ $iota-utils-bgcolor-namespace: 'bgcolor-';
 // Generate background colors
 
 @mixin _iota-utils-background-colors {
-	@each $color, $value in $iota-utils-bgcolor-names {
-		.#{$iota-global-utilities-namespace + $iota-utils-bgcolor-namespace + $color} {
-			border-color: $value;
-		}
-	}
+    @each $color, $value in $iota-utils-bgcolor-names {
+        .#{$iota-global-utilities-namespace + $iota-utils-bgcolor-namespace + $color} {
+            border-color: $value;
+        }
+    }
 }
 
 @include _iota-utils-background-colors;

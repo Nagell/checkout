@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<counters />
-		<sample-payments />
+		<counters :to-pay="toPay" />
+		<sample-payments :to-pay="toPay" />
 		<keyboard />
 	</div>
 </template>
@@ -18,6 +18,14 @@ export default {
 		Counters,
 		SamplePayments,
 		Keyboard,
+	},
+
+	props: {
+		toPay: {
+			type: Number,
+			default: 0,
+			required: true,
+		},
 	},
 }
 </script>

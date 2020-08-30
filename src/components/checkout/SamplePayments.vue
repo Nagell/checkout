@@ -7,17 +7,26 @@ import config from '@/config'
 
 export default {
 	name: 'sample-payments',
+
+	props: {
+		toPay: {
+			type: Number,
+			default: 0,
+			required: true,
+		},
+	},
+
 	data: function() {
 		return {
 			config: config,
-			targetAmount: 89.9,
 			results: [],
 		}
 	},
 
 	created() {
-		this.countPossiblePayments(this.targetAmount)
+		this.countPossiblePayments(this.toPay)
 	},
+
 	methods: {
 		countPossiblePayments(targetAmount) {
 			let availableValues = [...config.moneyValues],
@@ -51,6 +60,7 @@ export default {
 				pointer = 0
 				sum = 0
 			}
+			console.log('To pay: ', this.toPay)
 			console.table(JSON.parse(JSON.stringify(this.results)))
 		},
 

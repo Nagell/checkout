@@ -29,11 +29,11 @@ $iota-font-size-namespace: 'fsize' !default;
 // Generate font sizes
 
 @mixin _iota-utils-font-colors {
-	@each $color, $value in $iota-utils-fontcolor-names {
-		.#{$iota-global-utilities-namespace + $iota-font-color-namespace + '-' + $color} {
-			color: $value;
-		}
-	}
+    @each $color, $value in $iota-utils-fontcolor-names {
+        .#{$iota-global-utilities-namespace + $iota-font-color-namespace + '-' + $color} {
+            color: $value;
+        }
+    }
 }
 
 @include _iota-utils-font-colors;
@@ -41,11 +41,11 @@ $iota-font-size-namespace: 'fsize' !default;
 // Generate font colors
 
 @mixin _iota-utils-font-size {
-	@each $name, $fontSize in $iota-utils-font-size {
-		.#{$iota-global-utilities-namespace + $iota-font-size-namespace + $name} {
-			font-size: #{$fontSize};
-		}
-	}
+    @each $name, $fontSize in $iota-utils-font-size {
+        .#{$iota-global-utilities-namespace + $iota-font-size-namespace + $name} {
+            font-size: #{$fontSize};
+        }
+    }
 }
 
 @include _iota-utils-font-size;
