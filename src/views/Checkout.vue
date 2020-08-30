@@ -1,18 +1,29 @@
 <template>
 	<div class="c-checkout">
 		<div class="c-checkout__counters">
-			<counters :to-pay="toPay" :payment="payment" />
+			<counters :to-pay="toPay" :payment="payment" :rest="rest" />
 		</div>
 		<div class="c-checkout__payments">
-			<div class="c-checkout__empty" />
-			<div class="c-checkout__samples">
-				<sample-payments :to-pay="toPay" @key-clicked="keyClicked" />
+			<div class="c-checkout__payments-tabs">
+				<ul>
+					<li class="active">Bar</li>
+					<li>EC</li>
+					<li>Kreditkarte</li>
+					<li>Gutschein</li>
+					<li>Sonstiges</li>
+				</ul>
 			</div>
-			<div class="c-checkout__keyboard">
-				<keyboard @key-clicked="keyClicked" />
-			</div>
-			<div class="c-checkout__pay">
-				<button>Zahlen</button>
+			<div class="c-checkout__payments-content">
+				<div class="c-checkout__empty" />
+				<div class="c-checkout__samples">
+					<sample-payments :to-pay="toPay" @key-clicked="keyClicked" />
+				</div>
+				<div class="c-checkout__keyboard">
+					<keyboard @key-clicked="keyClicked" />
+				</div>
+				<div class="c-checkout__pay">
+					<button @click="pay">Zahlen</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -44,26 +55,36 @@ export default {
 		return {
 			payment: '',
 			tempPayment: '',
+			rest: 0,
 		}
 	},
 
 	methods: {
 		keyClicked(payload) {
 			let key = payload.key,
-				sample = payload.sample
+				sample = payload.sample,
+				payment = this.tempPayment
 
 			if (!sample) {
 				// TODO: rework to switch
 				if (key !== 'backspace') {
-					this.tempPayment = this.tempPayment.toString() + payload.key
-				} else if (key === 'backspace') {
-					this.tempPayment = this.tempPayment.toString().slice(0, -1)
+					payment = payment.toString() + payload.key
+				} else {
+					payment = payment.toString().slice(0, -1)
 				}
 			} else {
-				this.tempPayment = key.toString()
+				payment = key.toString()
 			}
 
-			this.payment = (parseFloat(this.tempPayment) / 100).toFixed(2)
+			this.tempPayment = payment
+			this.payment = (parseFloat(payment) / 100).toFixed(2)
+		},
+
+		pay() {
+			this.rest =
+				this.payment && this.payment > this.toPay
+					? Number(parseFloat(this.payment) - parseFloat(this.toPay)).toFixed(2)
+					: 0
 		},
 	},
 }

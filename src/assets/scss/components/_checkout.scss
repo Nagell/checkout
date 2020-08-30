@@ -5,6 +5,8 @@
 $component-checkout: true;
 $component-checkout-namespace: 'checkout' !default;
 
+$component-checkout-opt-tab-width: 12 * $iota-global-gutter-default;
+
 $component-checkout-opt-font-face: $settings-common-opt-font-face;
 
 $component-checkout-opt-payment-height: 400px;
@@ -34,8 +36,55 @@ $selector: $component-checkout-namespace-var-checkout;
 	}
 
 	&__payments {
+		position: relative;
 		width: 100%;
 		height: $component-checkout-opt-payment-height;
+	}
+
+	&__payments-tabs {
+		position: absolute;
+		bottom: 100%;
+		width: 100%;
+
+		> ul {
+			display: flex;
+			justify-content: center;
+
+			width: 100%;
+			height: 60px;
+
+			> li {
+				font-size: $iota-global-font-size-l;
+
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				width: $component-checkout-opt-tab-width;
+
+				height: calc(100% - 0.25 * $component-checkout-opt-margin);
+				margin-left: 0.25 * $component-checkout-opt-margin;
+				margin-bottom: 0.25 * $component-checkout-opt-margin;
+
+				list-style: none;
+
+				cursor: pointer;
+				user-select: none;
+
+				color: map-get($checkout-colors, w);
+				background-color: map-get($checkout-colors, s2);
+
+				&.active {
+					background-color: map-get($checkout-colors, s4);
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+
+	&__payments-content {
+		width: 100%;
+		height: 100%;
 		padding: 0 $component-checkout-opt-padding;
 
 		> * {
@@ -76,17 +125,22 @@ $selector: $component-checkout-namespace-var-checkout;
 
 			height: 5 * $iota-global-gutter-default;
 			padding: 0 4 * $component-checkout-opt-padding;
+			outline: none;
 
 			color: map-get($checkout-colors, w);
 			border: 3px solid map-get($checkout-colors, w);
 			background-color: map-get($checkout-colors, p1);
+
+			&:hover {
+				background-color: map-get($checkout-colors, p2);
+			}
 		}
 	}
 }
 
 @media only screen and (max-width: 1200px) {
 	.#{$selector} {
-		&__payments {
+		&__payments-content {
 			> * {
 				width: 33%;
 			}
@@ -98,9 +152,28 @@ $selector: $component-checkout-namespace-var-checkout;
 	}
 }
 
+@media only screen and (max-width: 800px) {
+	.#{$selector} {
+		&__payments-content {
+			> * {
+				width: 50%;
+			}
+		}
+
+		&__empty {
+			width: 0;
+		}
+
+		&__pay {
+			height: auto;
+			width: 100%;
+		}
+	}
+}
+
 @media only screen and (max-width: 600px) {
 	.#{$selector} {
-		&__payments {
+		&__payments-content {
 			> * {
 				width: 100%;
 			}

@@ -1,0 +1,60 @@
+// Counters Component
+
+// Options
+
+$component-counters: true;
+$component-counters-namespace: 'counters' !default;
+
+$component-counters-opt-font-face: $settings-common-opt-font-face;
+
+$component-counters-opt-margin: $iota-global-gutter-default !default;
+$component-counters-opt-padding: $iota-global-gutter-default !default;
+
+// Helper Local Variables
+
+$component-counters-namespace-var-counters: $iota-global-components-namespace +
+	$component-counters-namespace;
+$selector: $component-counters-namespace-var-counters;
+
+// Style Properties
+
+.#{$selector} {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    &__container {
+        position: relative;
+
+        margin-top: .25 * $component-counters-opt-margin;
+
+        > input {
+            font-family: $component-counters-opt-font-face;
+            font-size: $iota-global-font-size-xxl;
+
+            padding: 1.5 * $component-counters-opt-padding;
+
+            text-align: center;
+
+            color: map-get($checkout-colors, b);
+            border: none;
+            background-color: map-get($checkout-colors, w);
+        }
+
+        > label {
+            font-size: $iota-global-font-size-xs;
+
+            position: absolute;
+            top: $component-counters-opt-padding;
+            left: $component-counters-opt-padding;
+        }
+
+        &.transparent {
+            opacity: 50%;
+        }
+    }
+}

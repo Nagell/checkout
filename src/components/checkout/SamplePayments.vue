@@ -117,7 +117,7 @@ export default {
 					}
 					return acc
 				}, [])
-
+			// reduce results to the 4 best ones
 			while (modifiedresults.length > 4) {
 				this.toPay > config.lazinessThreshold ? modifiedresults.shift() : modifiedresults.pop()
 			}
@@ -125,13 +125,17 @@ export default {
 			this.$devLog.log('Best fitting results:')
 			this.$devLog.table(JSON.parse(JSON.stringify(modifiedresults)))
 
-			this.resultsToRender = [
-				{
-					payment: this.toPay,
-					difference: 0,
-				},
-				...modifiedresults,
-			]
+			let isToPayInResults = modifiedresults.find(result => result.payment === this.toPay)
+
+			this.resultsToRender = isToPayInResults
+				? [...modifiedresults]
+				: [
+						{
+							payment: this.toPay,
+							difference: 0,
+						},
+						...modifiedresults,
+				  ]
 		},
 
 		keyClicked(key) {
