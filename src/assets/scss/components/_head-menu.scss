@@ -1,11 +1,10 @@
-// Layout Component
+// Head Menu Component
 
 // Options
 
 $component-head-menu: true;
 $component-head-menu-namespace: 'head-menu' !default;
 
-$component-head-menu-opt-head-menu-height: 5 * $iota-global-gutter-default;
 $component-head-menu-opt-tab-width: 12 * $iota-global-gutter-default;
 
 $component-head-menu-opt-font-face: $settings-common-opt-font-face;
@@ -21,112 +20,110 @@ $selector: $component-head-menu-namespace-var-head-menu;
 
 // Style Properties
 
-// --------------------------------------
-// Header head-menuigation
-// --------------------------------------
-
 .#{$selector} {
-	position: relative;
+    position: relative;
 
-	height: $component-head-menu-opt-head-menu-height;
-	margin: 0;
-	padding: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 
-	color: map-get($checkout-colors, w);
-	background-color: map-get($checkout-colors, s4);
+    color: map-get($checkout-colors, w);
+    background-color: map-get($checkout-colors, s4);
 
-	&__tabs-container {
-		position: absolute;
-		right: 0;
+    &__tabs-container {
+        position: absolute;
+        right: 0;
 
-		display: flex;
-		align-items: center;
-		flex-direction: row;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
 
-		height: 100%;
-		padding-right: $component-head-menu-opt-padding;
+        height: 100%;
+        padding-right: $component-head-menu-opt-padding;
 
-		> ul {
-			display: flex;
-			flex-direction: row;
+        > ul {
+            display: flex;
+            flex-direction: row;
 
-			height: calc(100% - 0.25 * #{$component-head-menu-opt-padding});
-			margin: 0.25 * $component-head-menu-opt-margin 2 * $component-head-menu-opt-margin 0 0;
+            height: calc(100% - .25 * #{$component-head-menu-opt-padding});
+            margin: .25 * $component-head-menu-opt-margin 2 * $component-head-menu-opt-margin 0 0;
 
-			> li {
-				cursor: pointer;
-				user-select: none;
-				font-size: $iota-global-font-size-s;
+            > li {
+                font-size: $iota-global-font-size-s;
 
-				display: flex;
-				align-items: center;
-				flex-direction: row;
-				justify-content: flex-start;
+                position: relative;
 
-				width: $component-head-menu-opt-tab-width;
-				height: 100%;
-				margin-left: 0.25 * $component-head-menu-opt-margin;
-				padding: $component-head-menu-opt-padding;
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+                justify-content: flex-start;
 
-				list-style: none;
-				position: relative;
+                width: $component-head-menu-opt-tab-width;
+                height: 100%;
+                margin-left: .25 * $component-head-menu-opt-margin;
+                padding: $component-head-menu-opt-padding;
 
-				color: map-get($checkout-colors, b);
-				background-color: map-get($checkout-colors, s3);
+                list-style: none;
 
-				.#{$selector}__tab-icon {
-					display: flex;
-					align-items: center;
-					justify-content: center;
+                cursor: pointer;
+                user-select: none;
 
-					width: 3 * $component-head-menu-opt-padding;
-					height: 3 * $component-head-menu-opt-padding;
-					margin-right: $component-head-menu-opt-margin;
+                color: map-get($checkout-colors, b);
+                background-color: map-get($checkout-colors, s3);
 
-					color: map-get($checkout-colors, w);
-					border-radius: 50%;
-					background-color: map-get($checkout-colors, p2);
-				}
+                .#{$selector}__tab-icon {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
 
-				.#{$selector}__tab-close {
-					position: absolute;
-					right: 0.5 * $component-head-menu-opt-margin;
-					top: 0.5 * $component-head-menu-opt-margin;
-				}
-			}
+                    width: 3 * $component-head-menu-opt-padding;
+                    height: 3 * $component-head-menu-opt-padding;
+                    margin-right: $component-head-menu-opt-margin;
 
-			> li.active {
-				background-color: map-get($checkout-colors, s1);
-			}
-		}
-	}
+                    color: map-get($checkout-colors, w);
+                    border-radius: 50%;
+                    background-color: map-get($checkout-colors, p2);
+                }
+
+                .#{$selector}__tab-close {
+                    position: absolute;
+                    top: .5 * $component-head-menu-opt-margin;
+                    right: .5 * $component-head-menu-opt-margin;
+                }
+            }
+
+            > li.active {
+                background-color: map-get($checkout-colors, s1);
+            }
+        }
+    }
 }
 
 $subSelector: $selector + '-sub';
 
 .#{$subSelector} {
-	position: absolute;
-	z-index: 100;
+    position: absolute;
+    z-index: 100;
 
-	display: flex;
-	align-items: center;
-	flex-direction: row;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
 
-	height: 100%;
-	padding: 0 2 * $component-head-menu-opt-padding;
+    height: 100%;
+    padding: 0 2 * $component-head-menu-opt-padding;
 
-	background-color: map-get($checkout-colors, s4);
+    background-color: map-get($checkout-colors, s4);
 
-	&__item {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
+    &__item {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
 
-		margin: $component-head-menu-opt-margin;
+        margin: $component-head-menu-opt-margin;
 
-		color: map-get($checkout-colors, w);
-		border: none;
-		outline: none;
-		background: transparent;
-	}
+        color: map-get($checkout-colors, w);
+        border: none;
+        outline: none;
+        background: transparent;
+    }
 }

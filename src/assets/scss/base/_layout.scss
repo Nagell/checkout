@@ -1,0 +1,30 @@
+// App Layout
+
+// Options
+
+$component-layout: true;
+$component-layout-namespace: 'layout' !default;
+
+$settings-layout-opt-head-width: 5 * $iota-global-gutter-default;
+
+$component-layout-opt-font-face: $settings-common-opt-font-face;
+
+$component-layout-opt-margin: $iota-global-gutter-default !default;
+$component-layout-opt-padding: $iota-global-gutter-default !default;
+
+// Helper Local Variables
+
+$component-layout-namespace-var-layout: $iota-global-components-namespace +
+	$component-layout-namespace;
+$selector: $component-layout-namespace-var-layout;
+
+// Style Properties
+
+.#{$selector} {
+    &__head {
+        height: $settings-layout-opt-head-width;
+    }
+    &__content {
+        height: calc(100% - #{$settings-layout-opt-head-width});
+    }
+}

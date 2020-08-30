@@ -1,0 +1,60 @@
+// Sample payments Component
+
+// Options
+
+$component-sample-payments: true;
+$component-sample-payments-namespace: 'sample-payments' !default;
+
+$component-sample-payments-opt-font-face: $settings-common-opt-font-face;
+
+$component-sample-payments-opt-margin: $iota-global-gutter-default !default;
+$component-sample-payments-opt-padding: $iota-global-gutter-default !default;
+
+// Helper Local Variables
+
+$component-sample-payments-namespace-var-sample-payments: $iota-global-components-namespace +
+	$component-sample-payments-namespace;
+$selector: $component-sample-payments-namespace-var-sample-payments;
+
+// Style Properties
+
+.#{$selector} {
+	width: 100%;
+	height: 100%;
+
+	> ul {
+		display: flex;
+		flex-direction: column;
+
+		width: 100%;
+		height: 100%;
+
+		> li {
+			font-size: $iota-global-font-size-m;
+
+			position: relative;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			height: 100%;
+
+			list-style: none;
+
+			cursor: pointer;
+			user-select: none;
+
+			color: map-get($checkout-colors, w);
+			background-color: map-get($checkout-colors, s3);
+
+			&:not(:last-child) {
+				margin-bottom: 0.5 * $component-sample-payments-opt-margin;
+			}
+		}
+
+		> li:hover {
+			background-color: map-get($checkout-colors, p1);
+		}
+	}
+}

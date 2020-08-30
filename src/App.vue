@@ -1,13 +1,22 @@
 <template>
-	<div id="app">
-		<head-menu
-			:tabs="tabs"
-			:active-tab="activeTab"
-			@add-checkout-tab="addCheckoutTab"
-			@set-active-tab="setActiveTab"
-			@remove-tab="removeTab"
-		/>
-		<checkout :key="tab.id" v-show="tab.id === activeTab" v-for="tab in tabs" :to-pay="tab.toPay" />
+	<div id="app" class="c-layout">
+		<div class="c-layout__head">
+			<head-menu
+				:tabs="tabs"
+				:active-tab="activeTab"
+				@add-checkout-tab="addCheckoutTab"
+				@set-active-tab="setActiveTab"
+				@remove-tab="removeTab"
+			/>
+		</div>
+		<div class="c-layout__content">
+			<checkout
+				:key="tab.id"
+				v-show="tab.id === activeTab"
+				v-for="tab in tabs"
+				:to-pay="tab.toPay"
+			/>
+		</div>
 	</div>
 </template>
 

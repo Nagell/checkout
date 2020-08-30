@@ -14,6 +14,7 @@ $path-assets-global-fonts: './../font/';
 
 @import 'base/initialize';
 @import 'base/common';
+@import 'base/layout';
 
 @import 'objects/container';
 @import 'objects/grid';
@@ -21,7 +22,10 @@ $path-assets-global-fonts: './../font/';
 @import 'objects/media';
 @import 'objects/type';
 
+@import 'components/checkout';
 @import 'components/head-menu';
+@import 'components/keyboard';
+@import 'components/sample-payments';
 
 @import 'utilities/align-items';
 @import 'utilities/align';

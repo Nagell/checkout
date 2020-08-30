@@ -1,0 +1,117 @@
+// Checkout Component
+
+// Options
+
+$component-checkout: true;
+$component-checkout-namespace: 'checkout' !default;
+
+$component-checkout-opt-font-face: $settings-common-opt-font-face;
+
+$component-checkout-opt-payment-height: 400px;
+
+$component-checkout-opt-margin: $iota-global-gutter-default !default;
+$component-checkout-opt-padding: $iota-global-gutter-default !default;
+
+// Helper Local Variables
+
+$component-checkout-namespace-var-checkout: $iota-global-components-namespace +
+	$component-checkout-namespace;
+$selector: $component-checkout-namespace-var-checkout;
+
+// Style Properties
+
+.#{$selector} {
+	width: 100%;
+	height: 100%;
+
+	&__counters {
+		overflow-y: auto;
+
+		height: calc(100% - #{$component-checkout-opt-payment-height});
+		margin: 0 0.5 * $component-checkout-opt-margin;
+
+		background-color: map-get($checkout-colors, s1);
+	}
+
+	&__payments {
+		width: 100%;
+		height: $component-checkout-opt-payment-height;
+		padding: 0 $component-checkout-opt-padding;
+
+		> * {
+			float: left;
+
+			width: 25%;
+			height: 100%;
+			padding: $component-checkout-opt-padding;
+		}
+	}
+
+	&__empty {
+		flex-basis: 0;
+		flex-grow: 1;
+
+		padding: 0 !important;
+	}
+
+	&__samples {
+		display: flex;
+		align-items: flex-end;
+		justify-content: flex-end;
+	}
+
+	&__keyboard {
+		display: flex;
+		align-items: flex-end;
+		justify-content: flex-end;
+	}
+
+	&__pay {
+		display: flex;
+		align-items: flex-end;
+		justify-content: flex-end;
+
+		> button {
+			font-size: $iota-global-font-size-ml;
+
+			height: 5 * $iota-global-gutter-default;
+			padding: 0 4 * $component-checkout-opt-padding;
+
+			color: map-get($checkout-colors, w);
+			border: 3px solid map-get($checkout-colors, w);
+			background-color: map-get($checkout-colors, p1);
+		}
+	}
+}
+
+@media only screen and (max-width: 1200px) {
+	.#{$selector} {
+		&__payments {
+			> * {
+				width: 33%;
+			}
+		}
+
+		&__empty {
+			width: 0;
+		}
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.#{$selector} {
+		&__payments {
+			> * {
+				width: 100%;
+			}
+		}
+
+		&__empty {
+			width: 0;
+		}
+
+		&__pay {
+			height: auto;
+		}
+	}
+}

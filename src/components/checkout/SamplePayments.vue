@@ -1,5 +1,15 @@
 <template>
-	<div />
+	<div class="c-sample-payments">
+		<ul>
+			<li
+				:key="key"
+				v-for="(result, key) in resultsToRender.slice().reverse()"
+				@click="keyClicked(result.payment * 100)"
+			>
+				€ {{ result.payment.toFixed(2) }}
+			</li>
+		</ul>
+	</div>
 </template>
 
 <script>
@@ -19,12 +29,12 @@ export default {
 	data: function() {
 		return {
 			config: config,
-			results: [],
+			resultsToRender: [],
 		}
 	},
 
 	created() {
-		this.countPossiblePayments(this.toPay)
+		this.choseBestFitting(this.countPossiblePayments(this.toPay))
 	},
 
 	methods: {
@@ -32,20 +42,24 @@ export default {
 			let availableValues = [...config.moneyValues],
 				payments = [],
 				pointer = 0,
-				sum = 0
+				sum = 0,
+				results = []
 
 			while (availableValues.length > 0) {
-				// if the pointer is outside an array it's finished
-				while (!(pointer === availableValues.length)) {
+				// if the pointer is outside an array
+				// or the amount of banknotes is bigger then 15 (unrealistic) it's finished;
+				while (!(pointer === availableValues.length) && payments.length < 15) {
 					if (sum < targetAmount) {
 						sum += availableValues[pointer]
 						payments.push(availableValues[pointer])
 					} else {
-						this.saveResult({
-							targetAmount,
-							sum,
-							payments,
-						})
+						results.push(
+							this.prepareResult({
+								targetAmount,
+								sum,
+								payments,
+							})
+						)
 						// remove last payment
 						sum -= availableValues[pointer]
 						payments.pop()
@@ -60,17 +74,68 @@ export default {
 				pointer = 0
 				sum = 0
 			}
-			console.log('To pay: ', this.toPay)
-			console.table(JSON.parse(JSON.stringify(this.results)))
+
+			this.$devLog.log('To pay: ', this.toPay)
+			this.$devLog.table(JSON.parse(JSON.stringify(results)))
+
+			return results
 		},
 
-		saveResult(payload = { targetAmount: 0, sum: 0, payments: [] }) {
-			this.results.push({
+		prepareResult(payload = { targetAmount: 0, sum: 0, payments: [] }) {
+			return {
 				payment: payload.sum,
 				difference: Math.round((payload.sum - payload.targetAmount) * 100) / 100,
 				banknotesAmount: payload.payments.length,
 				payments: JSON.stringify([...payload.payments]),
-			})
+			}
+		},
+
+		choseBestFitting(results) {
+			let modifiedresults = results
+				// sort results
+				.sort((a, b) => {
+					return a.payment - b.payment
+				})
+				// reduce amount of data
+				.reduce((acc, obj) => {
+					acc.push({
+						payment: obj.payment,
+						difference: obj.difference,
+						banknotesAmount: obj.banknotesAmount,
+					})
+					return acc
+				}, [])
+				// reduce to only unique values
+				// (because of the sorting before those that stay after this step have also the smallest banknotesAmount)
+				.reduce((acc, obj) => {
+					if (acc.length > 0) {
+						if (acc[acc.length - 1].payment !== obj.payment) {
+							acc.push(obj)
+						}
+					} else {
+						acc.push(obj)
+					}
+					return acc
+				}, [])
+
+			while (modifiedresults.length > 4) {
+				this.toPay > config.lazinessThreshold ? modifiedresults.shift() : modifiedresults.pop()
+			}
+
+			this.$devLog.log('Best fitting results:')
+			this.$devLog.table(JSON.parse(JSON.stringify(modifiedresults)))
+
+			this.resultsToRender = [
+				{
+					payment: this.toPay,
+					difference: 0,
+				},
+				...modifiedresults,
+			]
+		},
+
+		keyClicked(key) {
+			this.$emit('key-clicked', { key: key, sample: true })
 		},
 	},
 }
