@@ -43,4 +43,5 @@ npm run csscomb
 | 30.08   | 16:45 | 20:00 | 3:15  | Logik der Komponenten und Stilisierung                              |
 | 30.08   | 21:00 | 22:00 | 1:00  | Logik - Tastatur                                                    |
 | 30.08   | 23:30 | 1:00  | 1:30  | Stilisierung, Logik - Counters                                      |
-| SUMMARY |       |       | 20:00 |                                                                     |
+| 31.08   | 20:00 | 22:00 | 2:00  | Code review                                                         |
+| SUMMARY |       |       | 22:00 |                                                                     |
