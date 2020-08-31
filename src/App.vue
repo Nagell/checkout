@@ -15,6 +15,7 @@
                 v-show="tab.id === activeTab"
                 v-for="tab in tabs"
                 :to-pay="tab.toPay"
+                :tab-id="tab.id"
             />
         </div>
     </div>

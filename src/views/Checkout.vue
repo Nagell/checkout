@@ -16,7 +16,7 @@
             <div class="c-checkout__payments-content">
                 <div class="c-checkout__empty" />
                 <div class="c-checkout__samples">
-                    <sample-payments :to-pay="toPay" @key-clicked="keyClicked" />
+                    <sample-payments :to-pay="toPay" :tab-id="tabId" @key-clicked="keyClicked" />
                 </div>
                 <div class="c-checkout__keyboard">
                     <keyboard @key-clicked="keyClicked" />
@@ -45,6 +45,11 @@ export default {
 
     props: {
         toPay: {
+            type: Number,
+            default: 0,
+            required: true,
+        },
+        tabId: {
             type: Number,
             default: 0,
             required: true,

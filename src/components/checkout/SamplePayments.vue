@@ -24,6 +24,11 @@ export default {
             default: 0,
             required: true,
         },
+        tabId: {
+            type: Number,
+            default: 0,
+            required: true,
+        },
     },
 
     data: function() {
@@ -81,8 +86,12 @@ export default {
                     pointer = 0
                     sum = 0
                 }
-
-                this.$devLog.log('To pay: ', this.toPay)
+                this.$devLog.log(
+                    `\n\n\n%c---- Results from tab ${this.tabId} ----------------`,
+                    'background: #222; color: #bada55; font-size: 16px;'
+                )
+                this.$devLog.log('\nTo pay: ', this.toPay)
+                this.$devLog.log('\nGenerated predictions:')
                 this.$devLog.table(JSON.parse(JSON.stringify(results)))
                 resolve(results)
             })
@@ -133,7 +142,7 @@ export default {
                 this.toPay > config.lazinessThreshold ? results.shift() : results.pop()
             }
 
-            this.$devLog.log('Best fitting results:')
+            this.$devLog.log('\nBest fitting results:')
             this.$devLog.table(JSON.parse(JSON.stringify(results)))
 
             let isToPayInResults = results.find(result => result.payment === this.toPay)
