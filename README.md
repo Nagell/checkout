@@ -30,7 +30,7 @@ npm run lint
 npm run csscomb
 ```
 
-# Timelog
+## Timelog
 
 | Date    | Start | End   | Time  | Comment                                                             |
 | ------- | ----- | ----- | :---: | ------------------------------------------------------------------- |

@@ -19,42 +19,46 @@ $selector: $component-counters-namespace-var-counters;
 // Style Properties
 
 .#{$selector} {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
 
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
 
-    &__container {
-        position: relative;
+	&__container {
+		margin-bottom: 5 * $component-counters-opt-margin;
 
-        margin-top: .25 * $component-counters-opt-margin;
+		&-inner {
+			position: relative;
 
-        > input {
-            font-family: $component-counters-opt-font-face;
-            font-size: $iota-global-font-size-xxl;
+			margin-top: 0.25 * $component-counters-opt-margin;
 
-            padding: 1.5 * $component-counters-opt-padding;
+			> input {
+				font-family: $component-counters-opt-font-face;
+				font-size: $iota-global-font-size-xxl;
 
-            text-align: center;
+				padding: 1.5 * $component-counters-opt-padding;
 
-            color: map-get($checkout-colors, b);
-            border: none;
-            background-color: map-get($checkout-colors, w);
-        }
+				text-align: center;
 
-        > label {
-            font-size: $iota-global-font-size-xs;
+				color: map-get($checkout-colors, b);
+				border: none;
+				background-color: map-get($checkout-colors, w);
+			}
 
-            position: absolute;
-            top: $component-counters-opt-padding;
-            left: $component-counters-opt-padding;
-        }
+			> label {
+				font-size: $iota-global-font-size-xs;
 
-        &.transparent {
-            opacity: 50%;
-        }
-    }
+				position: absolute;
+				top: $component-counters-opt-padding;
+				left: $component-counters-opt-padding;
+			}
+
+			&.transparent {
+				opacity: 50%;
+			}
+		}
+	}
 }
