@@ -13,46 +13,53 @@ $component-sample-payments-opt-padding: $iota-global-gutter-default !default;
 // Helper Local Variables
 
 $component-sample-payments-namespace-var-sample-payments: $iota-global-components-namespace +
-	$component-sample-payments-namespace;
+    $component-sample-payments-namespace;
 $selector: $component-sample-payments-namespace-var-sample-payments;
 
 // Style Properties
 
 .#{$selector} {
-	width: 100%;
-	height: 100%;
+    width: 100%;
+    width: 300px;
+    height: 100%;
 
-	> ul {
-		display: flex;
-		flex-direction: column;
+    > ul {
+        display: flex;
+        flex-direction: column;
 
-		width: 100%;
-		height: 100%;
+        width: 100%;
+        height: 100%;
 
-		> li {
-			font-size: $iota-global-font-size-l;
+        > li {
+            font-size: $iota-global-font-size-l;
 
-			display: flex;
-			align-items: center;
-			justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-			height: 100%;
+            height: 100%;
 
-			list-style: none;
+            list-style: none;
 
-			cursor: pointer;
-			user-select: none;
+            cursor: pointer;
+            user-select: none;
 
-			color: map-get($checkout-colors, w);
-			background-color: map-get($checkout-colors, s3);
+            color: map-get($checkout-colors, w);
+            background-color: map-get($checkout-colors, s3);
 
-			&:not(:last-child) {
-				margin-bottom: 0.5 * $component-sample-payments-opt-margin;
-			}
-		}
+            &:not(:last-child) {
+                margin-bottom: .5 * $component-sample-payments-opt-margin;
+            }
+        }
 
-		> li:hover {
-			background-color: map-get($checkout-colors, p1);
-		}
-	}
+        > li:hover {
+            background-color: map-get($checkout-colors, p1);
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .#{$selector} {
+        width: 100%;
+    }
 }

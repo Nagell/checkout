@@ -22,7 +22,7 @@
                     <keyboard @key-clicked="keyClicked" />
                 </div>
                 <div class="c-checkout__pay">
-                    <button @click="pay">Zahlen</button>
+                    <button :disabled="payDisable" @click="pay">Zahlen</button>
                 </div>
             </div>
         </div>
@@ -59,25 +59,32 @@ export default {
         }
     },
 
+    computed: {
+        payDisable() {
+            return !this.payment || parseFloat(this.payment) < this.toPay
+        },
+    },
+
     methods: {
         keyClicked(payload) {
-            let key = payload.key,
+            let key = payload.key.toString(),
                 sample = payload.sample,
-                payment = this.tempPayment
+                payment = this.tempPayment.toString()
 
             if (!sample) {
                 // TODO: rework to switch
                 if (key !== 'backspace') {
-                    payment = payment.toString() + payload.key
+                    payment = payment + payload.key
                 } else {
-                    payment = payment.toString().slice(0, -1)
+                    payment = payment.slice(0, -1)
+                    this.rest = ''
                 }
             } else {
-                payment = key.toString()
+                payment = key
             }
 
             this.tempPayment = payment
-            this.payment = (parseFloat(payment) / 100).toFixed(2)
+            this.payment = payment !== '' ? (parseFloat(payment) / 100).toFixed(2) : ''
         },
 
         pay() {
