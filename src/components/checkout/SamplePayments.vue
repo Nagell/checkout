@@ -34,54 +34,61 @@ export default {
     },
 
     created() {
-        this.choseBestFitting(this.countPossiblePayments(this.toPay))
+        this.countPossiblePayments(this.toPay)
+            .then(this.reduceResults)
+            .then(this.choseBestResults)
+            .then(results => {
+                this.resultsToRender = results
+            })
+            .catch(error => console.log(error))
     },
 
     methods: {
-        countPossiblePayments(targetAmount) {
-            let availableValues = [...config.moneyValues],
-                payments = [],
-                pointer = 0,
-                sum = 0,
-                results = []
+        async countPossiblePayments(targetAmount) {
+            return await new Promise((resolve, reject) => {
+                let availableValues = [...config.moneyValues],
+                    payments = [],
+                    pointer = 0,
+                    sum = 0,
+                    results = []
 
-            while (availableValues.length > 0) {
-                // if the pointer is outside an array
-                // or the amount of banknotes is bigger then 15 (unrealistic) it's finished;
-                while (!(pointer === availableValues.length) && payments.length < 15) {
-                    if (sum < targetAmount) {
-                        sum += availableValues[pointer]
-                        payments.push(availableValues[pointer])
-                    } else {
-                        results.push(
-                            this.prepareResult({
-                                targetAmount,
-                                sum,
-                                payments,
-                            })
-                        )
-                        // remove last payment
-                        sum -= availableValues[pointer]
-                        payments.pop()
-                        //move pointer to add smaller amounts in next steps
-                        pointer++
+                while (availableValues.length > 0) {
+                    // if the pointer is outside an array
+                    // or the amount of banknotes is bigger then 15 (unrealistic) it's finished;
+                    while (!(pointer === availableValues.length) && payments.length < 15) {
+                        if (sum < targetAmount) {
+                            sum += availableValues[pointer]
+                            payments.push(availableValues[pointer])
+                        } else {
+                            results.push(
+                                this.prepareResultObject({
+                                    targetAmount,
+                                    sum,
+                                    payments,
+                                })
+                            )
+                            // remove last payment
+                            sum -= availableValues[pointer]
+                            payments.pop()
+                            //move pointer to add smaller amounts in next steps
+                            pointer++
+                        }
                     }
+                    // reduce an array with available banknotes array
+                    availableValues.shift()
+                    // reset helper variables
+                    payments = []
+                    pointer = 0
+                    sum = 0
                 }
-                // reduce an array with available banknotes array
-                availableValues.shift()
-                // reset helper variables
-                payments = []
-                pointer = 0
-                sum = 0
-            }
 
-            this.$devLog.log('To pay: ', this.toPay)
-            this.$devLog.table(JSON.parse(JSON.stringify(results)))
-
-            return results
+                this.$devLog.log('To pay: ', this.toPay)
+                this.$devLog.table(JSON.parse(JSON.stringify(results)))
+                resolve(results)
+            })
         },
 
-        prepareResult(payload = { targetAmount: 0, sum: 0, payments: [] }) {
+        prepareResultObject(payload = { targetAmount: 0, sum: 0, payments: [] }) {
             return {
                 payment: payload.sum,
                 difference: Math.round((payload.sum - payload.targetAmount) * 100) / 100,
@@ -90,7 +97,7 @@ export default {
             }
         },
 
-        choseBestFitting(results) {
+        reduceResults(results) {
             let modifiedresults = results
                 // sort results
                 .sort((a, b) => {
@@ -117,27 +124,30 @@ export default {
                     }
                     return acc
                 }, [])
+            return modifiedresults
+        },
+
+        choseBestResults(results) {
             // reduce results to the 4 best ones
-            while (modifiedresults.length > 4) {
-                this.toPay > config.lazinessThreshold
-                    ? modifiedresults.shift()
-                    : modifiedresults.pop()
+            while (results.length > 4) {
+                this.toPay > config.lazinessThreshold ? results.shift() : results.pop()
             }
 
             this.$devLog.log('Best fitting results:')
-            this.$devLog.table(JSON.parse(JSON.stringify(modifiedresults)))
+            this.$devLog.table(JSON.parse(JSON.stringify(results)))
 
-            let isToPayInResults = modifiedresults.find(result => result.payment === this.toPay)
+            let isToPayInResults = results.find(result => result.payment === this.toPay)
 
-            this.resultsToRender = isToPayInResults
-                ? [...modifiedresults]
+            let resultsToRender = isToPayInResults
+                ? [...results]
                 : [
                       {
                           payment: this.toPay,
                           difference: 0,
                       },
-                      ...modifiedresults,
+                      ...results,
                   ]
+            return resultsToRender
         },
 
         keyClicked(key) {
