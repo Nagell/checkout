@@ -11,23 +11,25 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue'
+
 import config from '@/config'
 
-export default {
+export default Vue.extend({
     name: 'keyboard',
 
     data() {
         return {
             config: config,
-            buttons: config.keyboard,
+            buttons: config.keyboard as (string | number)[],
         }
     },
 
     methods: {
-        keyClicked(key) {
+        keyClicked(key: number | string): void {
             this.$emit('key-clicked', { key: key, sample: false })
         },
     },
-}
+})
 </script>

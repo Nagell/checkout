@@ -39,33 +39,37 @@
     </menu>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropType } from 'vue'
+
+import { Tab } from '@/types'
+
+export default Vue.extend({
     name: 'head-menu',
 
     props: {
         tabs: {
-            type: Array,
+            type: Array as PropType<Tab[]>,
             required: true,
         },
         activeTab: {
-            type: Number,
+            type: Number as PropType<number>,
             default: 0,
         },
     },
 
     methods: {
-        addCheckoutTab() {
+        addCheckoutTab(): void {
             this.$emit('add-checkout-tab')
         },
 
-        setActiveTab(id) {
+        setActiveTab(id: number): void {
             this.$emit('set-active-tab', id)
         },
 
-        removeTab(id) {
+        removeTab(id: number): void {
             this.$emit('remove-tab', id)
         },
     },
-}
+})
 </script>

@@ -12,20 +12,23 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropType } from 'vue'
+import { Result, PrepareResult, ReducedResult } from '@/types'
+
 import config from '@/config'
 
-export default {
+export default Vue.extend({
     name: 'sample-payments',
 
     props: {
         toPay: {
-            type: Number,
+            type: Number as PropType<number>,
             default: 0,
             required: true,
         },
         tabId: {
-            type: Number,
+            type: Number as PropType<number>,
             default: 0,
             required: true,
         },
@@ -34,7 +37,7 @@ export default {
     data: function() {
         return {
             config: config,
-            resultsToRender: [],
+            resultsToRender: [] as ReducedResult[],
         }
     },
 
@@ -49,8 +52,8 @@ export default {
     },
 
     methods: {
-        async countPossiblePayments(targetAmount) {
-            return await new Promise((resolve, reject) => {
+        async countPossiblePayments(targetAmount: number): Promise<Result[]> {
+            return await new Promise(resolve => {
                 let availableValues = [...config.moneyValues],
                     payments = [],
                     pointer = 0,
@@ -97,7 +100,7 @@ export default {
             })
         },
 
-        prepareResultObject(payload = { targetAmount: 0, sum: 0, payments: [] }) {
+        prepareResultObject(payload: PrepareResult): Result {
             return {
                 payment: payload.sum,
                 difference: Math.round((payload.sum - payload.targetAmount) * 100) / 100,
@@ -106,14 +109,14 @@ export default {
             }
         },
 
-        reduceResults(results) {
+        reduceResults(results: Result[]): ReducedResult[] {
             let modifiedresults = results
                 // sort results
-                .sort((a, b) => {
+                .sort((a: Result, b: Result) => {
                     return a.payment - b.payment
                 })
                 // reduce amount of data
-                .reduce((acc, obj) => {
+                .reduce((acc: ReducedResult[], obj: Result) => {
                     acc.push({
                         payment: obj.payment,
                         difference: obj.difference,
@@ -123,7 +126,7 @@ export default {
                 }, [])
                 // reduce to only unique values
                 // (because of the sorting before those that stay after this step have also the smallest banknotesAmount)
-                .reduce((acc, obj) => {
+                .reduce((acc: ReducedResult[], obj: ReducedResult) => {
                     if (acc.length > 0) {
                         if (acc[acc.length - 1].payment !== obj.payment) {
                             acc.push(obj)
@@ -136,7 +139,7 @@ export default {
             return modifiedresults
         },
 
-        choseBestResults(results) {
+        choseBestResults(results: ReducedResult[]): ReducedResult[] {
             // reduce results to the 4 best ones
             while (results.length > 4) {
                 this.toPay > config.lazinessThreshold ? results.shift() : results.pop()
@@ -153,15 +156,16 @@ export default {
                       {
                           payment: this.toPay,
                           difference: 0,
+                          banknotesAmount: 0,
                       },
                       ...results,
                   ]
             return resultsToRender
         },
 
-        keyClicked(key) {
+        keyClicked(key: number | string): void {
             this.$emit('key-clicked', { key: key, sample: true })
         },
     },
-}
+})
 </script>

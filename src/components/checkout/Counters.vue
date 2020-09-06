@@ -36,38 +36,40 @@
     </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropType } from 'vue'
+
+export default Vue.extend({
     name: 'counters',
 
     props: {
         toPay: {
-            type: [Number, String],
+            type: [Number, String] as PropType<number | string>,
             default: 0,
             required: false,
         },
         payment: {
-            type: [Number, String],
+            type: [Number, String] as PropType<number | string>,
             default: 0,
             required: false,
         },
         rest: {
-            type: [Number, String],
+            type: [Number, String] as PropType<number | string>,
             default: 0,
             required: false,
         },
     },
 
     computed: {
-        nonRestStyle() {
+        nonRestStyle(): string[] {
             return ['c-counters__container-inner', this.rest ? 'transparent' : '']
         },
     },
 
     methods: {
-        renderWithCurrency(val) {
+        renderWithCurrency(val: string): string {
             return parseFloat(val) > 0 ? '€' + ' ' + val.toString() : ''
         },
     },
-}
+})
 </script>
