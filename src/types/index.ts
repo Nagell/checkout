@@ -1,10 +1,3 @@
-export interface Tab {
-    id: number
-    name: string
-    icon: string
-    toPay: number
-}
-
 export interface Result {
     payment: number
     difference: number
@@ -22,4 +15,11 @@ export interface ReducedResult {
     payment: number
     difference: number
     banknotesAmount: number
+}
+
+export interface Tab {
+    id: number
+    name: string
+    icon: string
+    toPay: number
 }
