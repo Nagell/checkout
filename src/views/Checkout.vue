@@ -29,12 +29,15 @@
     </div>
 </template>
 
-<script>
-import Counters from '@/components/checkout/Counters'
-import SamplePayments from '@/components/checkout/SamplePayments'
-import Keyboard from '@/components/checkout/Keyboard'
+<script lang="ts">
+import Vue, { PropType } from 'vue'
+import { KeyClicked } from '@/types'
 
-export default {
+import Counters from '@/components/checkout/Counters.vue'
+import SamplePayments from '@/components/checkout/SamplePayments.vue'
+import Keyboard from '@/components/checkout/Keyboard.vue'
+
+export default Vue.extend({
     name: 'checkout',
 
     components: {
@@ -45,12 +48,12 @@ export default {
 
     props: {
         toPay: {
-            type: Number,
+            type: Number as PropType<number>,
             default: 0,
             required: true,
         },
         tabId: {
-            type: Number,
+            type: Number as PropType<number>,
             default: 0,
             required: true,
         },
@@ -58,26 +61,25 @@ export default {
 
     data() {
         return {
-            payment: '',
-            tempPayment: '',
-            rest: 0,
+            payment: '' as string,
+            tempPayment: '' as string,
+            rest: 0 as number | string,
         }
     },
 
     computed: {
-        payDisable() {
+        payDisable(): boolean {
             return !this.payment || parseFloat(this.payment) < this.toPay
         },
     },
 
     methods: {
-        keyClicked(payload) {
+        keyClicked(payload: KeyClicked): void {
             let key = payload.key.toString(),
                 sample = payload.sample,
                 payment = this.tempPayment.toString()
 
             if (!sample) {
-                // TODO: rework to switch
                 if (key !== 'backspace') {
                     payment = payment + payload.key
                 } else {
@@ -92,12 +94,12 @@ export default {
             this.payment = payment !== '' ? (parseFloat(payment) / 100).toFixed(2) : ''
         },
 
-        pay() {
+        pay(): void {
             this.rest =
-                this.payment && this.payment > this.toPay
-                    ? Number(parseFloat(this.payment) - parseFloat(this.toPay)).toFixed(2)
+                this.payment && Number(parseFloat(this.payment)) > this.toPay
+                    ? Number(parseFloat(this.payment) - this.toPay).toFixed(2)
                     : 0
         },
     },
-}
+})
 </script>

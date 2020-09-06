@@ -23,3 +23,8 @@ export interface Tab {
     icon: string
     toPay: number
 }
+
+export interface KeyClicked {
+    key: number | string
+    sample: boolean
+}
