@@ -15,7 +15,7 @@ $component-head-menu-opt-padding: $iota-global-gutter-default !default;
 // Helper Local Variables
 
 $component-head-menu-namespace-var-head-menu: $iota-global-components-namespace +
-	$component-head-menu-namespace;
+    $component-head-menu-namespace;
 $selector: $component-head-menu-namespace-var-head-menu;
 
 // Style Properties
@@ -45,8 +45,8 @@ $selector: $component-head-menu-namespace-var-head-menu;
             display: flex;
             flex-direction: row;
 
-            height: calc(100% - .25 * #{$component-head-menu-opt-padding});
-            margin: .25 * $component-head-menu-opt-margin 2 * $component-head-menu-opt-margin 0 0;
+            height: calc(100% - 0.25 * #{$component-head-menu-opt-padding});
+            margin: 0.25 * $component-head-menu-opt-margin 2 * $component-head-menu-opt-margin 0 0;
 
             > li {
                 font-size: $iota-global-font-size-s;
@@ -58,9 +58,9 @@ $selector: $component-head-menu-namespace-var-head-menu;
                 justify-content: flex-start;
 
                 width: $component-head-menu-opt-tab-width;
-                height: calc(100% - .25 * $component-head-menu-opt-margin);
-                margin-bottom: .25 * $component-head-menu-opt-margin;
-                margin-left: .25 * $component-head-menu-opt-margin;
+                height: 100%;
+                margin-bottom: 0.25 * $component-head-menu-opt-margin;
+                margin-left: 0.25 * $component-head-menu-opt-margin;
                 padding: $component-head-menu-opt-padding;
 
                 list-style: none;
@@ -87,8 +87,8 @@ $selector: $component-head-menu-namespace-var-head-menu;
 
                 .#{$selector}__tab-close {
                     position: absolute;
-                    top: .5 * $component-head-menu-opt-margin;
-                    right: .5 * $component-head-menu-opt-margin;
+                    top: 0.5 * $component-head-menu-opt-margin;
+                    right: 0.5 * $component-head-menu-opt-margin;
                 }
             }
 
