@@ -22,13 +22,13 @@ export default Vue.extend({
     data() {
         return {
             config: config,
-            buttons: config.keyboard as (string | number)[],
+            buttons: config.keyboard as string[],
         }
     },
 
     methods: {
-        keyClicked(key: number | string): void {
-            this.$emit('key-clicked', { key: key, sample: false })
+        keyClicked(value: string): void {
+            this.$emit('key-clicked', { value: value, sample: false })
         },
     },
 })

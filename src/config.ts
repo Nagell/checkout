@@ -6,5 +6,8 @@ export default {
     // (my girlfriend says so - she worked as waitress :) )
     lazinessThreshold: 50 as number,
 
-    keyboard: [7, 8, 9, 4, 5, 6, 1, 2, 3, 'backspace', 0, '00'] as (number | string)[],
+    // maximum reasonable amount of banknotes to be used as a payment
+    maxBanknotes: 15 as number,
+
+    keyboard: ['7', '8', '9', '4', '5', '6', '1', '2', '3', 'backspace', '0', '00'] as string[],
 }

@@ -13,7 +13,7 @@ $component-counters-opt-padding: $iota-global-gutter-default !default;
 // Helper Local Variables
 
 $component-counters-namespace-var-counters: $iota-global-components-namespace +
-	$component-counters-namespace;
+    $component-counters-namespace;
 $selector: $component-counters-namespace-var-counters;
 
 // Style Properties
@@ -33,19 +33,35 @@ $selector: $component-counters-namespace-var-counters;
         &-inner {
             position: relative;
 
-            margin-top: .25 * $component-counters-opt-margin;
+            margin: .25 * $component-counters-opt-margin auto 0;
 
             > input {
                 font-family: $component-counters-opt-font-face;
                 font-size: $iota-global-font-size-xxl;
 
-                padding: 1.5 * $component-counters-opt-padding;
+                width: 38 * $iota-global-gutter-default;
+                padding: 1.5 * $component-counters-opt-padding 1.5 * $component-counters-opt-padding
+                1.5 * $component-counters-opt-padding 16 * $component-counters-opt-padding;
 
-                text-align: center;
+                text-align: left;
 
                 color: map-get($checkout-colors, b);
                 border: none;
+                outline: none;
                 background-color: map-get($checkout-colors, w);
+
+                /* Chrome, Safari, Edge, Opera */
+                &::-webkit-outer-spin-button,
+                &::-webkit-inner-spin-button {
+                    margin: 0;
+
+                    -webkit-appearance: none;
+                }
+
+                /* Firefox */
+                &[type='number'] {
+                    -moz-appearance: textfield;
+                }
             }
 
             > label {
@@ -54,6 +70,15 @@ $selector: $component-counters-namespace-var-counters;
                 position: absolute;
                 top: $component-counters-opt-padding;
                 left: $component-counters-opt-padding;
+            }
+
+            > span {
+                font-family: $component-counters-opt-font-face;
+                font-size: $iota-global-font-size-xxl;
+
+                position: absolute;
+                top: 1.5 * $iota-global-gutter-default;
+                left: 13.5 * $iota-global-gutter-default;
             }
 
             &.transparent {

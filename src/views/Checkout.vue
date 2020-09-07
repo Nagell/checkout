@@ -1,31 +1,37 @@
 <template>
     <div class="c-checkout">
         <div class="c-checkout__counters">
-            <counters :to-pay="toPay" :payment="payment" :rest="rest" />
+            <counters :payment="payment" :rest="rest" @set-to-pay="setToPay" />
         </div>
-        <div class="c-checkout__payments">
-            <div class="c-checkout__payments-tabs">
-                <ul>
-                    <li class="active">Bar</li>
-                    <li>EC</li>
-                    <li>Kreditkarte</li>
-                    <li>Gutschein</li>
-                    <li>Sonstiges</li>
-                </ul>
+        <transition name="c-checkout__payments">
+            <div v-show="toPay" class="c-checkout__payments">
+                <div class="c-checkout__payments-tabs">
+                    <ul>
+                        <li class="active">Bar</li>
+                        <li>EC</li>
+                        <li>Kreditkarte</li>
+                        <li>Gutschein</li>
+                        <li>Sonstiges</li>
+                    </ul>
+                </div>
+                <div class="c-checkout__payments-content">
+                    <div class="c-checkout__empty" />
+                    <div class="c-checkout__samples">
+                        <sample-payments
+                            :to-pay="toPay"
+                            :tab-id="tabId"
+                            @key-clicked="keyClicked"
+                        />
+                    </div>
+                    <div class="c-checkout__keyboard">
+                        <keyboard @key-clicked="keyClicked" />
+                    </div>
+                    <div class="c-checkout__pay">
+                        <button :disabled="payDisable" @click="pay">Zahlen</button>
+                    </div>
+                </div>
             </div>
-            <div class="c-checkout__payments-content">
-                <div class="c-checkout__empty" />
-                <div class="c-checkout__samples">
-                    <sample-payments :to-pay="toPay" :tab-id="tabId" @key-clicked="keyClicked" />
-                </div>
-                <div class="c-checkout__keyboard">
-                    <keyboard @key-clicked="keyClicked" />
-                </div>
-                <div class="c-checkout__pay">
-                    <button :disabled="payDisable" @click="pay">Zahlen</button>
-                </div>
-            </div>
-        </div>
+        </transition>
     </div>
 </template>
 
@@ -47,11 +53,6 @@ export default Vue.extend({
     },
 
     props: {
-        toPay: {
-            type: Number as PropType<number>,
-            default: 0,
-            required: true,
-        },
         tabId: {
             type: Number as PropType<number>,
             default: 0,
@@ -61,9 +62,10 @@ export default Vue.extend({
 
     data() {
         return {
+            toPay: 0 as number,
             payment: '' as string,
             tempPayment: '' as string,
-            rest: 0 as number | string,
+            rest: '' as string,
         }
     },
 
@@ -75,13 +77,13 @@ export default Vue.extend({
 
     methods: {
         keyClicked(payload: KeyClicked): void {
-            let key = payload.key.toString(),
+            let key = payload.value,
                 sample = payload.sample,
-                payment = this.tempPayment.toString()
+                payment = this.tempPayment
 
             if (!sample) {
                 if (key !== 'backspace') {
-                    payment = payment + payload.key
+                    payment = payment + payload.value
                 } else {
                     payment = payment.slice(0, -1)
                     this.rest = ''
@@ -91,14 +93,18 @@ export default Vue.extend({
             }
 
             this.tempPayment = payment
-            this.payment = payment !== '' ? (parseFloat(payment) / 100).toFixed(2) : ''
+            this.payment = (parseFloat(payment) / 100).toFixed(2)
+        },
+
+        setToPay(val: number): void {
+            this.toPay = val
         },
 
         pay(): void {
             this.rest =
-                this.payment && Number(parseFloat(this.payment)) > this.toPay
-                    ? Number(parseFloat(this.payment) - this.toPay).toFixed(2)
-                    : 0
+                !Number.isNaN(this.payment) && parseFloat(this.payment) > this.toPay
+                    ? (parseFloat(this.payment) - this.toPay).toFixed(2)
+                    : ''
         },
     },
 })

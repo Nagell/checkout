@@ -23,13 +23,17 @@ $selector: $component-checkout-namespace-var-checkout;
 // Style Properties
 
 .#{$selector} {
+    display: flex;
+    flex-direction: column;
+
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 5 * #{$iota-global-gutter-default});
 
     &__counters {
         overflow-y: auto;
+        flex: 1 1 calc(100% - #{$component-checkout-opt-payment-height});
 
-        height: calc(100% - #{$component-checkout-opt-payment-height});
+        height: 100%;
         margin: 0 0.5 * $component-checkout-opt-margin;
 
         background-color: map-get($checkout-colors, s1);
@@ -37,9 +41,21 @@ $selector: $component-checkout-namespace-var-checkout;
 
     &__payments {
         position: relative;
+        flex-shrink: 1;
 
         width: 100%;
         height: $component-checkout-opt-payment-height;
+
+        &-enter-active,
+        &-leave-active {
+            transition: height 0.5s;
+        }
+        &-enter {
+            height: 0;
+        }
+        &-leave-to {
+            height: $component-checkout-opt-payment-height;
+        }
     }
 
     &__payments-tabs {
@@ -54,7 +70,7 @@ $selector: $component-checkout-namespace-var-checkout;
             justify-content: center;
 
             width: 100%;
-            height: 60px;
+            height: 5 * $iota-global-gutter-default;
 
             > li {
                 font-size: $iota-global-font-size-l;

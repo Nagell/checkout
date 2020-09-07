@@ -41,14 +41,18 @@ export default Vue.extend({
         }
     },
 
-    created() {
-        this.countPossiblePayments(this.toPay)
-            .then(this.reduceResults)
-            .then(this.choseBestResults)
-            .then(results => {
-                this.resultsToRender = results
-            })
-            .catch(error => console.log(error))
+    watch: {
+        toPay: function(val: number) {
+            if (val !== 0) {
+                this.countPossiblePayments(val)
+                    .then(this.reduceResults)
+                    .then(this.choseBestResults)
+                    .then(results => {
+                        this.resultsToRender = results
+                    })
+                    .catch(error => console.log(error))
+            }
+        },
     },
 
     methods: {
@@ -62,8 +66,11 @@ export default Vue.extend({
 
                 while (availableValues.length > 0) {
                     // if the pointer is outside an array
-                    // or the amount of banknotes is bigger then 15 (unrealistic) it's finished;
-                    while (!(pointer === availableValues.length) && payments.length < 15) {
+                    // or the amount of banknotes is bigger then the resonable amount it's finnished;
+                    while (
+                        !(pointer === availableValues.length) &&
+                        payments.length < config.maxBanknotes
+                    ) {
                         if (sum < targetAmount) {
                             sum += availableValues[pointer]
                             payments.push(availableValues[pointer])
@@ -163,8 +170,8 @@ export default Vue.extend({
             return resultsToRender
         },
 
-        keyClicked(key: number | string): void {
-            this.$emit('key-clicked', { key: key, sample: true })
+        keyClicked(value: string): void {
+            this.$emit('key-clicked', { value: value.toString(), sample: true })
         },
     },
 })

@@ -4,12 +4,14 @@
             <div :class="nonRestStyle">
                 <label for="to-pay">Zu zahlen</label>
                 <input
+                    v-model="toPay"
                     id="to-pay"
                     class="c-counters__input"
-                    disabled
-                    type="text"
-                    :value="renderWithCurrency(toPay.toFixed(2))"
+                    type="number"
+                    step="0.01"
+                    @keydown.enter.prevent="toPayConfirmed"
                 />
+                <span>€</span>
             </div>
             <div :class="nonRestStyle">
                 <label for="payment">Gegeben</label>
@@ -17,20 +19,15 @@
                     id="payment"
                     class="c-counters__input"
                     disabled
-                    type="text"
-                    :value="renderWithCurrency(payment)"
+                    type="number"
+                    :value="payment"
                 />
+                <span v-if="payment">€</span>
             </div>
-            <div class="c-counters__container-inner">
-                <label v-if="rest" for="rest">Rest</label>
-                <input
-                    id="rest"
-                    v-if="rest"
-                    class="c-counters__input"
-                    disabled
-                    type="text"
-                    :value="renderWithCurrency(rest)"
-                />
+            <div v-if="rest" class="c-counters__container-inner">
+                <label for="rest">Rest</label>
+                <input id="rest" class="c-counters__input" disabled type="number" :value="rest" />
+                <span>€</span>
             </div>
         </div>
     </div>
@@ -43,32 +40,43 @@ export default Vue.extend({
     name: 'counters',
 
     props: {
-        toPay: {
-            type: [Number, String] as PropType<number | string>,
-            default: 0,
-            required: false,
-        },
         payment: {
-            type: [Number, String] as PropType<number | string>,
+            type: String as PropType<null | string>,
             default: 0,
             required: false,
         },
         rest: {
-            type: [Number, String] as PropType<number | string>,
-            default: 0,
+            type: String as PropType<null | string>,
+            default: null,
             required: false,
         },
+    },
+
+    data() {
+        return {
+            tempToPay: 0 as number | typeof NaN,
+        }
     },
 
     computed: {
         nonRestStyle(): string[] {
             return ['c-counters__container-inner', this.rest ? 'transparent' : '']
         },
+        toPay: {
+            get(): number {
+                return this.tempToPay
+            },
+            set(val: number | string) {
+                // value has to be checked if it's a string beacuse of the differences between browsers
+                this.tempToPay = typeof val === 'string' ? parseFloat(val.replace(/,/g, '.')) : val
+            },
+        },
     },
-
     methods: {
-        renderWithCurrency(val: string): string {
-            return parseFloat(val) > 0 ? '€' + ' ' + val.toString() : ''
+        toPayConfirmed(): void {
+            if (!Number.isNaN(this.tempToPay) && this.tempToPay > 0) {
+                this.$emit('set-to-pay', this.tempToPay)
+            }
         },
     },
 })

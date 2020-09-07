@@ -1,30 +1,8 @@
-export interface Result {
-    payment: number
-    difference: number
-    banknotesAmount: number
-    payments: string
-}
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Result, PrepareResult, ReducedResult } from './interfaces/result'
+import { KeyClicked } from './interfaces/key'
+import { Tab } from './interfaces/tab'
 
-export interface PrepareResult {
-    targetAmount: number
-    sum: number
-    payments: number[]
-}
-
-export interface ReducedResult {
-    payment: number
-    difference: number
-    banknotesAmount: number
-}
-
-export interface Tab {
-    id: number
-    name: string
-    icon: string
-    toPay: number
-}
-
-export interface KeyClicked {
-    key: number | string
-    sample: boolean
-}
+export * from './interfaces/result'
+export * from './interfaces/key'
+export * from './interfaces/tab'

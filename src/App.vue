@@ -14,7 +14,6 @@
                 :key="tab.id"
                 v-show="tab.id === activeTab"
                 v-for="tab in tabs"
-                :to-pay="tab.toPay"
                 :tab-id="tab.id"
             />
         </div>
@@ -49,13 +48,10 @@ export default Vue.extend({
     methods: {
         addCheckoutTab(): void {
             this.tabIndex++
-            let amount = Math.random() * 200,
-                roundedAmount = Math.round(amount * 100) / 100
             this.tabs.push({
                 id: this.tabIndex,
                 name: 'Verkauf',
                 icon: 'VK',
-                toPay: roundedAmount,
             })
             this.activeTab = this.tabIndex
         },
