@@ -44,4 +44,8 @@ npm run csscomb
 | 30.08   | 21:00 | 22:00 | 1:00  | Logik - Tastatur                                                    |
 | 30.08   | 23:30 | 1:00  | 1:30  | Stilisierung, Logik - Counters                                      |
 | 31.08   | 20:00 | 22:00 | 2:00  | Code review                                                         |
-| SUMMARY |       |       | 22:00 |                                                                     |
+| 05.09   | 16:00 | 18:00 | 2:00  | TypeScript - lesen der Dokumentation und Beispiele für Vue          |
+| 06.09   | 12:00 | 17:00 | 5:00  | Umschreibung zum TypeScript                                         |
+| 06.09   | 22:00 | 2:00  | 4:00  | TypeSript, menuelles Input                                          |
+| 07.09   | 22:00 | 2:00  | 4:00  | TypeSript, menuelles Input as a component                           |
+| SUMMARY |       |       | 37:00 |                                                                     |

@@ -149,7 +149,11 @@ export default Vue.extend({
         choseBestResults(results: ReducedResult[]): ReducedResult[] {
             // reduce results to the 4 best ones
             while (results.length > 4) {
-                this.toPay > config.lazinessThreshold ? results.shift() : results.pop()
+                if (this.toPay > config.lazinessThreshold) {
+                    results.shift()
+                } else {
+                    results.pop()
+                }
             }
 
             this.$devLog.log('\nBest fitting results:')

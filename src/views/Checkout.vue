@@ -96,8 +96,9 @@ export default Vue.extend({
             this.payment = (parseFloat(payment) / 100).toFixed(2)
         },
 
-        setToPay(val: number): void {
-            this.toPay = val
+        setToPay(val: string): void {
+            // TODO: currency conversion class (right now its rounded)
+            this.toPay = parseFloat(val)
         },
 
         pay(): void {
