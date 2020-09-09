@@ -47,5 +47,6 @@ npm run csscomb
 | 05.09   | 16:00 | 18:00 | 2:00  | TypeScript - lesen der Dokumentation und Beispiele für Vue          |
 | 06.09   | 12:00 | 17:00 | 5:00  | Umschreibung zum TypeScript                                         |
 | 06.09   | 22:00 | 2:00  | 4:00  | TypeSript, menuelles Input                                          |
-| 07.09   | 22:00 | 2:00  | 4:00  | TypeSript, menuelles Input as a component                           |
-| SUMMARY |       |       | 37:00 |                                                                     |
+| 07.09   | 22:00 | 2:00  | 4:00  | TypeSript, menuelles Input als Komponente                           |
+| 07.09   | 22:00 | 2:30  | 4:30  | Research, Klasse money für Operationen mit dem Geld                 |
+| SUMMARY |       |       | 41:30 |                                                                     |

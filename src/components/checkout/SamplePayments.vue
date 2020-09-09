@@ -50,7 +50,7 @@ export default Vue.extend({
                     .then(results => {
                         this.resultsToRender = results
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => this.$devLog.log(error))
             }
         },
     },

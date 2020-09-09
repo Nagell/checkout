@@ -83,7 +83,6 @@ export default Vue.extend({
     },
     methods: {
         toPayConfirmed(e: KeyboardEvent): void {
-            console.log(e)
             if (e.key === 'Enter') {
                 this.$emit('set-to-pay', this.tempToPay)
             }
