@@ -37,8 +37,11 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
+/* types */
 import { KeyClicked } from '@/types'
-
+/* classes */
+import money from '@/classes/money'
+/* components */
 import Counters from '@/components/checkout/Counters.vue'
 import SamplePayments from '@/components/checkout/SamplePayments.vue'
 import Keyboard from '@/components/checkout/Keyboard.vue'
@@ -53,6 +56,9 @@ export default Vue.extend({
     },
 
     props: {
+        /**
+         * Id of a tab in which this component is placed
+         */
         tabId: {
             type: Number as PropType<number>,
             default: 0,
@@ -62,16 +68,16 @@ export default Vue.extend({
 
     data() {
         return {
-            toPay: 0 as number,
-            payment: '' as string,
+            toPay: null as null | money,
+            payment: null as null | money,
             tempPayment: '' as string,
-            rest: '' as string,
+            rest: null as null | money,
         }
     },
 
     computed: {
         payDisable(): boolean {
-            return !this.payment || parseFloat(this.payment) < this.toPay
+            return !this.payment || !this.toPay || this.payment.getAmount() < this.toPay.getAmount()
         },
     },
 
@@ -86,25 +92,29 @@ export default Vue.extend({
                     payment = payment + payload.value
                 } else {
                     payment = payment.slice(0, -1)
-                    this.rest = ''
+                    this.rest = null
                 }
             } else {
                 payment = key
             }
 
             this.tempPayment = payment
-            this.payment = (parseFloat(payment) / 100).toFixed(2)
+            this.payment = new money(payment, true)
         },
 
-        setToPay(val: number): void {
-            this.toPay = val
+        setToPay(val: string): void {
+            this.toPay = new money(val)
         },
 
         pay(): void {
             this.rest =
-                !Number.isNaN(this.payment) && parseFloat(this.payment) > this.toPay
-                    ? (parseFloat(this.payment) - this.toPay).toFixed(2)
-                    : ''
+                this.payment !== null &&
+                this.toPay !== null &&
+                this.payment.getAmount() >= this.toPay.getAmount()
+                    ? new money(this.payment.getAmount(), true, this.payment.getCurrency()).sub(
+                          this.toPay
+                      )
+                    : null
         },
     },
 })

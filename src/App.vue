@@ -22,10 +22,10 @@
 
 <script lang="ts">
 import '@/assets/scss/main.scss'
-
 import Vue from 'vue'
+/* types */
 import { Tab } from '@/types'
-
+/* components */
 import HeadMenu from '@/components/HeadMenu.vue'
 import Checkout from '@/views/Checkout.vue'
 
@@ -43,6 +43,10 @@ export default Vue.extend({
             activeTab: null as number | null,
             tabIndex: 0 as number,
         }
+    },
+
+    mounted() {
+        this.addCheckoutTab()
     },
 
     methods: {

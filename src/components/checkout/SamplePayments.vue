@@ -14,19 +14,27 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
-import { Result, PrepareResult, ReducedResult } from '@/types'
-
 import config from '@/config'
+/* types */
+import { Result, PrepareResult, ReducedResult } from '@/types'
+/* classes */
+import money from '@/classes/money'
 
 export default Vue.extend({
     name: 'sample-payments',
 
     props: {
+        /**
+         * Amount of money to be payed (as 'money' class instance)
+         */
         toPay: {
-            type: Number as PropType<number>,
-            default: 0,
-            required: true,
+            type: Object as () => money,
+            default: null,
+            required: false,
         },
+        /**
+         * Id of a tab in which this component is placed
+         */
         tabId: {
             type: Number as PropType<number>,
             default: 0,
@@ -37,20 +45,23 @@ export default Vue.extend({
     data: function() {
         return {
             config: config,
+            amountToPay: 0,
             resultsToRender: [] as ReducedResult[],
         }
     },
 
     watch: {
-        toPay: function(val: number) {
-            if (val !== 0) {
-                this.countPossiblePayments(val)
+        toPay: function(val: null | money) {
+            if (val !== null) {
+                this.amountToPay = val.getAmount() / 100
+
+                this.countPossiblePayments(this.amountToPay)
                     .then(this.reduceResults)
                     .then(this.choseBestResults)
                     .then(results => {
                         this.resultsToRender = results
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => this.$devLog.log(error))
             }
         },
     },
@@ -100,7 +111,7 @@ export default Vue.extend({
                     `\n\n\n%c---- Results from tab ${this.tabId} ----------------`,
                     'background: #222; color: #bada55; font-size: 16px;'
                 )
-                this.$devLog.log('\nTo pay: ', this.toPay)
+                this.$devLog.log('\nTo pay: ', this.amountToPay)
                 this.$devLog.log('\nGenerated predictions:')
                 this.$devLog.table(JSON.parse(JSON.stringify(results)))
                 resolve(results)
@@ -149,19 +160,23 @@ export default Vue.extend({
         choseBestResults(results: ReducedResult[]): ReducedResult[] {
             // reduce results to the 4 best ones
             while (results.length > 4) {
-                this.toPay > config.lazinessThreshold ? results.shift() : results.pop()
+                if (this.amountToPay > config.lazinessThreshold) {
+                    results.shift()
+                } else {
+                    results.pop()
+                }
             }
 
             this.$devLog.log('\nBest fitting results:')
             this.$devLog.table(JSON.parse(JSON.stringify(results)))
 
-            let isToPayInResults = results.find(result => result.payment === this.toPay)
+            let isToPayInResults = results.find(result => result.payment === this.amountToPay)
 
             let resultsToRender = isToPayInResults
                 ? [...results]
                 : [
                       {
-                          payment: this.toPay,
+                          payment: this.amountToPay,
                           difference: 0,
                           banknotesAmount: 0,
                       },

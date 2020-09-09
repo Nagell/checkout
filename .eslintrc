@@ -9,6 +9,17 @@
         "curly": "error",
         "no-mixed-operators": "error",
         "no-param-reassign": "error",
+        /*"operator-linebreak": [
+            2,
+            "after",
+            {
+                "overrides": {
+                    "?": "before",
+                    ":": "before"
+                }
+            }
+        ],
+        "multiline-ternary": ["error", "always"], */
         "prettier/prettier": [
             "error",
             {
