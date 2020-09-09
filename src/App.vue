@@ -14,20 +14,22 @@
                 :key="tab.id"
                 v-show="tab.id === activeTab"
                 v-for="tab in tabs"
-                :to-pay="tab.toPay"
                 :tab-id="tab.id"
             />
         </div>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import '@/assets/scss/main.scss'
+import Vue from 'vue'
+/* types */
+import { Tab } from '@/types'
+/* components */
+import HeadMenu from '@/components/HeadMenu.vue'
+import Checkout from '@/views/Checkout.vue'
 
-import HeadMenu from '@/components/HeadMenu'
-import Checkout from '@/views/Checkout'
-
-export default {
+export default Vue.extend({
     name: 'app',
 
     components: {
@@ -37,31 +39,32 @@ export default {
 
     data() {
         return {
-            tabs: [],
-            activeTab: null,
-            tabIndex: 0,
+            tabs: [] as Tab[],
+            activeTab: null as number | null,
+            tabIndex: 0 as number,
         }
     },
 
+    mounted() {
+        this.addCheckoutTab()
+    },
+
     methods: {
-        addCheckoutTab(id) {
+        addCheckoutTab(): void {
             this.tabIndex++
-            let amount = Math.random() * 200,
-                roundedAmount = Math.round(amount * 100) / 100
             this.tabs.push({
                 id: this.tabIndex,
                 name: 'Verkauf',
                 icon: 'VK',
-                toPay: roundedAmount,
             })
             this.activeTab = this.tabIndex
         },
 
-        setActiveTab(id) {
+        setActiveTab(id: number): void {
             this.activeTab = id
         },
 
-        removeTab(id) {
+        removeTab(id: number): void {
             let indexToRemove = this.tabs.findIndex(tab => tab.id == id)
             this.tabs.splice(indexToRemove, 1)
             if (id === this.activeTab) {
@@ -69,7 +72,7 @@ export default {
             }
         },
 
-        setNewActiveTab(removedIndex) {
+        setNewActiveTab(removedIndex: number): void {
             let nextTabIndex = removedIndex,
                 previousTabIndex = removedIndex - 1
 
@@ -80,5 +83,5 @@ export default {
             }
         },
     },
-}
+})
 </script>

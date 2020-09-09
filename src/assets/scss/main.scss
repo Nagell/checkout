@@ -22,6 +22,8 @@ $path-assets-global-fonts: './../font/';
 @import 'objects/media';
 @import 'objects/type';
 
+@import 'components/common/input-field';
+
 @import 'components/checkout';
 @import 'components/counters';
 @import 'components/head-menu';

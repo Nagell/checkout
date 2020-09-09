@@ -12,20 +12,31 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropType } from 'vue'
 import config from '@/config'
+/* types */
+import { Result, PrepareResult, ReducedResult } from '@/types'
+/* classes */
+import money from '@/classes/money'
 
-export default {
+export default Vue.extend({
     name: 'sample-payments',
 
     props: {
+        /**
+         * Amount of money to be payed (as 'money' class instance)
+         */
         toPay: {
-            type: Number,
-            default: 0,
-            required: true,
+            type: Object as () => money,
+            default: null,
+            required: false,
         },
+        /**
+         * Id of a tab in which this component is placed
+         */
         tabId: {
-            type: Number,
+            type: Number as PropType<number>,
             default: 0,
             required: true,
         },
@@ -34,23 +45,30 @@ export default {
     data: function() {
         return {
             config: config,
-            resultsToRender: [],
+            amountToPay: 0,
+            resultsToRender: [] as ReducedResult[],
         }
     },
 
-    created() {
-        this.countPossiblePayments(this.toPay)
-            .then(this.reduceResults)
-            .then(this.choseBestResults)
-            .then(results => {
-                this.resultsToRender = results
-            })
-            .catch(error => console.log(error))
+    watch: {
+        toPay: function(val: null | money) {
+            if (val !== null) {
+                this.amountToPay = val.getAmount() / 100
+
+                this.countPossiblePayments(this.amountToPay)
+                    .then(this.reduceResults)
+                    .then(this.choseBestResults)
+                    .then(results => {
+                        this.resultsToRender = results
+                    })
+                    .catch(error => this.$devLog.log(error))
+            }
+        },
     },
 
     methods: {
-        async countPossiblePayments(targetAmount) {
-            return await new Promise((resolve, reject) => {
+        async countPossiblePayments(targetAmount: number): Promise<Result[]> {
+            return await new Promise(resolve => {
                 let availableValues = [...config.moneyValues],
                     payments = [],
                     pointer = 0,
@@ -59,8 +77,11 @@ export default {
 
                 while (availableValues.length > 0) {
                     // if the pointer is outside an array
-                    // or the amount of banknotes is bigger then 15 (unrealistic) it's finished;
-                    while (!(pointer === availableValues.length) && payments.length < 15) {
+                    // or the amount of banknotes is bigger then the resonable amount it's finnished;
+                    while (
+                        !(pointer === availableValues.length) &&
+                        payments.length < config.maxBanknotes
+                    ) {
                         if (sum < targetAmount) {
                             sum += availableValues[pointer]
                             payments.push(availableValues[pointer])
@@ -90,14 +111,14 @@ export default {
                     `\n\n\n%c---- Results from tab ${this.tabId} ----------------`,
                     'background: #222; color: #bada55; font-size: 16px;'
                 )
-                this.$devLog.log('\nTo pay: ', this.toPay)
+                this.$devLog.log('\nTo pay: ', this.amountToPay)
                 this.$devLog.log('\nGenerated predictions:')
                 this.$devLog.table(JSON.parse(JSON.stringify(results)))
                 resolve(results)
             })
         },
 
-        prepareResultObject(payload = { targetAmount: 0, sum: 0, payments: [] }) {
+        prepareResultObject(payload: PrepareResult): Result {
             return {
                 payment: payload.sum,
                 difference: Math.round((payload.sum - payload.targetAmount) * 100) / 100,
@@ -106,14 +127,14 @@ export default {
             }
         },
 
-        reduceResults(results) {
+        reduceResults(results: Result[]): ReducedResult[] {
             let modifiedresults = results
                 // sort results
-                .sort((a, b) => {
+                .sort((a: Result, b: Result) => {
                     return a.payment - b.payment
                 })
                 // reduce amount of data
-                .reduce((acc, obj) => {
+                .reduce((acc: ReducedResult[], obj: Result) => {
                     acc.push({
                         payment: obj.payment,
                         difference: obj.difference,
@@ -123,7 +144,7 @@ export default {
                 }, [])
                 // reduce to only unique values
                 // (because of the sorting before those that stay after this step have also the smallest banknotesAmount)
-                .reduce((acc, obj) => {
+                .reduce((acc: ReducedResult[], obj: ReducedResult) => {
                     if (acc.length > 0) {
                         if (acc[acc.length - 1].payment !== obj.payment) {
                             acc.push(obj)
@@ -136,32 +157,37 @@ export default {
             return modifiedresults
         },
 
-        choseBestResults(results) {
+        choseBestResults(results: ReducedResult[]): ReducedResult[] {
             // reduce results to the 4 best ones
             while (results.length > 4) {
-                this.toPay > config.lazinessThreshold ? results.shift() : results.pop()
+                if (this.amountToPay > config.lazinessThreshold) {
+                    results.shift()
+                } else {
+                    results.pop()
+                }
             }
 
             this.$devLog.log('\nBest fitting results:')
             this.$devLog.table(JSON.parse(JSON.stringify(results)))
 
-            let isToPayInResults = results.find(result => result.payment === this.toPay)
+            let isToPayInResults = results.find(result => result.payment === this.amountToPay)
 
             let resultsToRender = isToPayInResults
                 ? [...results]
                 : [
                       {
-                          payment: this.toPay,
+                          payment: this.amountToPay,
                           difference: 0,
+                          banknotesAmount: 0,
                       },
                       ...results,
                   ]
             return resultsToRender
         },
 
-        keyClicked(key) {
-            this.$emit('key-clicked', { key: key, sample: true })
+        keyClicked(value: string): void {
+            this.$emit('key-clicked', { value: value.toString(), sample: true })
         },
     },
-}
+})
 </script>

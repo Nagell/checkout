@@ -1,73 +1,121 @@
 <template>
     <div class="c-counters">
         <div class="c-counters__container">
-            <div :class="nonRestStyle">
-                <label for="to-pay">Zu zahlen</label>
-                <input
-                    id="to-pay"
-                    class="c-counters__input"
-                    disabled
-                    type="text"
-                    :value="renderWithCurrency(toPay.toFixed(2))"
-                />
-            </div>
-            <div :class="nonRestStyle">
-                <label for="payment">Gegeben</label>
-                <input
-                    id="payment"
-                    class="c-counters__input"
-                    disabled
-                    type="text"
-                    :value="renderWithCurrency(payment)"
-                />
-            </div>
-            <div class="c-counters__container-inner">
-                <label v-if="rest" for="rest">Rest</label>
-                <input
-                    id="rest"
-                    v-if="rest"
-                    class="c-counters__input"
-                    disabled
-                    type="text"
-                    :value="renderWithCurrency(rest)"
-                />
-            </div>
+            <input-field
+                v-model="toPay"
+                id="to-pay"
+                :focus-on-mount="true"
+                :validate="
+                    v => {
+                        return mx_validate_positiveNumber(v)
+                    }
+                "
+                :is-custom-v-model="true"
+                prefix="€"
+                label="Zu zahlen"
+                @key-down="toPayConfirmed"
+            />
+            <input-field
+                v-model="inputPayment"
+                id="payment"
+                :disabled="true"
+                :is-custom-v-model="true"
+                :prefix="payment ? payment.getCurrency().symbol : ''"
+                label="Gegeben"
+            />
+            <input-field
+                v-model="inputRest"
+                id="rest"
+                v-if="rest"
+                :disabled="true"
+                :is-custom-v-model="true"
+                :prefix="rest ? rest.getCurrency().symbol : ''"
+                label="Rest"
+            />
         </div>
     </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropType } from 'vue'
+/* types */
+import { InputPayload } from '@/types'
+/* classes */
+import money from '@/classes/money'
+/* mixins */
+import MixinValidate from '@/mixins/validate'
+/* components */
+import InputField from '@/components/common/InputField.vue'
+
+export default Vue.extend({
     name: 'counters',
 
+    components: {
+        InputField,
+    },
+
+    mixins: [MixinValidate],
+
     props: {
-        toPay: {
-            type: [Number, String],
-            default: 0,
-            required: false,
-        },
+        /**
+         * Amount of payed money
+         */
         payment: {
-            type: [Number, String],
-            default: 0,
+            type: Object as PropType<null | money>,
+            default: null,
             required: false,
         },
+        /**
+         * Rest money which has to be payed out
+         */
         rest: {
-            type: [Number, String],
-            default: 0,
+            type: Object as PropType<null | money>,
+            default: null,
             required: false,
         },
+    },
+
+    data() {
+        return {
+            tempToPay: '' as string,
+        }
     },
 
     computed: {
-        nonRestStyle() {
-            return ['c-counters__container-inner', this.rest ? 'transparent' : '']
+        nonRestStyle(): string[] {
+            return ['c-input-field', this.rest ? 'transparent' : '']
         },
-    },
 
-    methods: {
-        renderWithCurrency(val) {
-            return parseFloat(val) > 0 ? '€' + ' ' + val.toString() : ''
+        toPay: {
+            get(): string {
+                return this.tempToPay
+            },
+            set(payload: InputPayload) {
+                if (!payload.error && typeof payload.value === 'string') {
+                    this.tempToPay = payload.value
+                }
+            },
+        },
+
+        inputPayment: {
+            get(): string | null {
+                return this.payment ? this.payment.getFormatted() : null
+            },
+        },
+
+        inputRest: {
+            get(): string | null {
+                return this.rest ? this.rest.getFormatted() : null
+            },
         },
     },
-}
+    methods: {
+        toPayConfirmed(e: KeyboardEvent): void {
+            if (e.key === 'Enter') {
+                this.tempToPay = new money(this.tempToPay.toString()).getFormatted()
+                this.$emit('set-to-pay', this.tempToPay)
+            }
+        },
+    },
+})
 </script>
