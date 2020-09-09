@@ -18,8 +18,12 @@ export default class money {
     private amount: number
     private currency: Currency
 
-    constructor(amount: number | string, currency: Currency = { symbol: '€', decimal: ',' }) {
-        this.amount = this.convertToAmount(amount)
+    constructor(
+        amount: number | string,
+        fromCents = false,
+        currency: Currency = { symbol: '€', decimal: ',' }
+    ) {
+        this.amount = this.convertToAmount(amount, fromCents)
         this.currency = currency
     }
 
@@ -31,7 +35,12 @@ export default class money {
      * Converts given value to number
      */
     private convertToNumber(val: number | string): number {
-        return typeof val === 'number' ? val : parseFloat(val.replace(/[,]/g, '.'))
+        if (typeof val === 'number') {
+            return val
+        } else {
+            const tempVal = val === '' ? '0' : val
+            return parseFloat(tempVal.replace(/[,]/g, '.'))
+        }
     }
 
     /**
@@ -39,8 +48,9 @@ export default class money {
      * Example: '3.44', '3,44' and 3.44 will be converted to 344
      * @param val - value of converted number
      */
-    private convertToAmount(val: number | string) {
-        return Math.round((this.convertToNumber(val) + 0.00001) * 100)
+    private convertToAmount(val: number | string, fromCents = false) {
+        const tempAmount = this.convertToNumber(val) + 0.00001
+        return fromCents ? Math.round(tempAmount) : Math.round(tempAmount * 100)
     }
 
     /** -----------------------------------------------------------------
@@ -72,17 +82,35 @@ export default class money {
     }
 
     /** -----------------------------------------------------------------
+     * GETTERS
+     * -----------------------------------------------------------------*/
+
+    /**
+     * Sets amount
+     */
+    public setAmount(amount: number | string, fromCents = false): void {
+        this.amount = this.convertToAmount(amount, fromCents)
+    }
+
+    /**
+     * Sets currency
+     */
+    public setCurrency(currency: Currency = { symbol: '€', decimal: ',' }): void {
+        this.currency = currency
+    }
+
+    /** -----------------------------------------------------------------
      * OPERATIONS
      * -----------------------------------------------------------------*/
 
     /**
      * Adds a value to the amount
      */
-    public add(val: number | string | money): money {
+    public add(val: number | string | money, fromCents = false): money {
         if (val instanceof money) {
-            this.amount += val.amount
+            this.amount += val.getAmount()
         } else {
-            this.amount += this.convertToAmount(val)
+            this.amount += this.convertToAmount(val, fromCents)
         }
         return this
     }
@@ -90,11 +118,11 @@ export default class money {
     /**
      * Subtract a value from the amount
      */
-    public sub(val: number | string | money): money {
+    public sub(val: number | string | money, fromCents = false): money {
         if (val instanceof money) {
-            this.amount -= val.amount
+            this.amount -= val.getAmount()
         } else {
-            this.amount -= this.convertToAmount(val)
+            this.amount -= this.convertToAmount(val, fromCents)
         }
         return this
     }

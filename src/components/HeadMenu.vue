@@ -48,10 +48,16 @@ export default Vue.extend({
     name: 'head-menu',
 
     props: {
+        /**
+         * Array of tabs which are actually created
+         */
         tabs: {
             type: Array as PropType<Tab[]>,
             required: true,
         },
+        /**
+         * Active tab Id - this one should be visible
+         */
         activeTab: {
             type: Number as PropType<number>,
             default: 0,

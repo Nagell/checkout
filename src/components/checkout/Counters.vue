@@ -15,26 +15,36 @@
                 label="Zu zahlen"
                 @key-down="toPayConfirmed"
             />
-            <div :class="nonRestStyle">
-                <label for="payment">Gegeben</label>
-                <input id="payment" disabled type="number" :value="payment" />
-                <span v-if="payment">€</span>
-            </div>
-            <div v-if="rest" class="c-input-field">
-                <label for="rest">Rest</label>
-                <input id="rest" disabled type="number" :value="rest" />
-                <span>€</span>
-            </div>
+            <input-field
+                v-model="inputPayment"
+                id="payment"
+                :disabled="true"
+                :is-custom-v-model="true"
+                :prefix="payment ? payment.getCurrency().symbol : ''"
+                label="Gegeben"
+            />
+            <input-field
+                v-model="inputRest"
+                id="rest"
+                v-if="rest"
+                :disabled="true"
+                :is-custom-v-model="true"
+                :prefix="rest ? rest.getCurrency().symbol : ''"
+                label="Rest"
+            />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
-import MixinValidate from '@/mixins/validate'
-
+/* types */
 import { InputPayload } from '@/types'
-
+/* classes */
+import money from '@/classes/money'
+/* mixins */
+import MixinValidate from '@/mixins/validate'
+/* components */
 import InputField from '@/components/common/InputField.vue'
 
 export default Vue.extend({
@@ -47,13 +57,19 @@ export default Vue.extend({
     mixins: [MixinValidate],
 
     props: {
+        /**
+         * Amount of payed money
+         */
         payment: {
-            type: String as PropType<null | string>,
-            default: 0,
+            type: Object as PropType<null | money>,
+            default: null,
             required: false,
         },
+        /**
+         * Rest money which has to be payed out
+         */
         rest: {
-            type: String as PropType<null | string>,
+            type: Object as PropType<null | money>,
             default: null,
             required: false,
         },
@@ -62,7 +78,6 @@ export default Vue.extend({
     data() {
         return {
             tempToPay: '' as string,
-            tempTest: '' as string,
         }
     },
 
@@ -70,6 +85,7 @@ export default Vue.extend({
         nonRestStyle(): string[] {
             return ['c-input-field', this.rest ? 'transparent' : '']
         },
+
         toPay: {
             get(): string {
                 return this.tempToPay
@@ -80,10 +96,23 @@ export default Vue.extend({
                 }
             },
         },
+
+        inputPayment: {
+            get(): string | null {
+                return this.payment ? this.payment.getFormatted() : null
+            },
+        },
+
+        inputRest: {
+            get(): string | null {
+                return this.rest ? this.rest.getFormatted() : null
+            },
+        },
     },
     methods: {
         toPayConfirmed(e: KeyboardEvent): void {
             if (e.key === 'Enter') {
+                this.tempToPay = new money(this.tempToPay.toString()).getFormatted()
                 this.$emit('set-to-pay', this.tempToPay)
             }
         },

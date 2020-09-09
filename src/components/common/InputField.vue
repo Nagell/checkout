@@ -6,7 +6,6 @@
             ref="input"
             :class="[!error ? '' : 'error']"
             :disabled="disabled"
-            :placeholder="placeholder"
             :type="type"
             :value="tempValue"
             step="any"
@@ -14,11 +13,12 @@
             @input="updateInput({ val: $event.target.value, el: 'input' })"
             @keydown="emitKeyDown"
         />
-        <span v-if="prefix && value"> {{ prefix }} </span>
+        <span :id="id + '-input-prefix'" v-if="prefix && value"> {{ prefix }} </span>
     </div>
 </template>
 
 <script lang="ts">
+/* types */
 import Vue, { PropType } from 'vue'
 import { VueConstructor } from 'vue/types/umd'
 
@@ -54,14 +54,14 @@ export default (Vue as VueConstructor<
             required: false,
         },
         /**
-         * ID of this component (also used in html and tests)
+         * ID of this component (also used in html)
          */
         id: {
             type: String as PropType<string>,
             required: true,
         },
         /**
-         * Defines if the Input is connected to a custom type of v-model
+         * Defines if the input is connected to a custom type of v-model
          */
         isCustomVModel: {
             type: Boolean as PropType<boolean>,
@@ -77,15 +77,7 @@ export default (Vue as VueConstructor<
             required: false,
         },
         /**
-         * Placeholder for the input field
-         */
-        placeholder: {
-            type: String as PropType<string>,
-            default: '',
-            required: false,
-        },
-        /**
-         * Placeholder for the input field
+         * Prefix for the input field
          */
         prefix: {
             type: String as PropType<string>,
@@ -110,7 +102,7 @@ export default (Vue as VueConstructor<
             required: false,
         },
         /**
-         * Current item (bind via v-model)
+         * Current value (bind via v-model)
          */
         value: {
             type: [String, Number] as PropType<string | number>,
