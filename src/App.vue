@@ -1,7 +1,7 @@
 <template>
     <div id="app" class="c-layout">
         <transition name="c-dialog">
-            <dialog-frame v-if="rest" title="Rest" @close-dialog="closeRestDialog">
+            <dialog-frame v-if="rest" title="Rückgeld" @close-dialog="closeRestDialog">
                 <template name="">
                     <input-field
                         v-model="inputRest"
@@ -9,7 +9,7 @@
                         :disabled="true"
                         :is-custom-v-model="true"
                         :prefix="rest ? rest.getCurrency().symbol : ''"
-                        label="Rest"
+                        label="Rückgeld"
                     />
                 </template>
             </dialog-frame>
