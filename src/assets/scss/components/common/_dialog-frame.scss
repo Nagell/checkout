@@ -1,0 +1,127 @@
+// Dialog Frame Component
+
+// Options
+
+$component-dialog-frame: true;
+$component-dialog-frame-namespace: 'dialog' !default;
+
+$component-dialog-frame-opt-font-face: $settings-common-opt-font-face;
+
+$component-dialog-frame-opt-margin: $iota-global-gutter-default !default;
+$component-dialog-frame-opt-padding: $iota-global-gutter-default !default;
+
+$component-dialog-frame-opt-header-height: 60px;
+
+// Helper Local Variables
+
+$component-dialog-frame-namespace-var-dialog-frame: $iota-global-components-namespace +
+    $component-dialog-frame-namespace;
+$selector: $component-dialog-frame-namespace-var-dialog-frame;
+
+// Style Properties
+
+.#{$selector} {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba($color: map-get($checkout-colors, b), $alpha: 0.5);
+
+    /* Animation */
+    &-enter-active,
+    &-leave-active {
+        transition: opacity 0.3s;
+    }
+
+    &-enter {
+        opacity: 0%;
+    }
+
+    &-leave-to {
+        opacity: 100%;
+    }
+
+    &__container {
+        width: 30%;
+        min-width: 550px;
+        max-width: 800px;
+        height: 30%;
+        min-height: 300px;
+        max-height: 550px;
+
+        background-color: map-get($checkout-colors, s1);
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        width: 100%;
+        height: $component-dialog-frame-opt-header-height;
+
+        color: map-get($checkout-colors, w);
+        background-color: map-get($checkout-colors, s4);
+
+        > h2 {
+            padding: $component-dialog-frame-opt-padding 2 * $component-dialog-frame-opt-padding;
+        }
+    }
+
+    &__close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: $component-dialog-frame-opt-header-height;
+        height: $component-dialog-frame-opt-header-height;
+
+        cursor: pointer;
+
+        &:hover {
+            > i {
+                color: map-get($checkout-colors, s2);
+            }
+        }
+    }
+
+    &__content {
+        font-size: $iota-global-font-size-l;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 100%;
+        height: calc(100% - #{$component-dialog-frame-opt-header-height});
+        padding: $component-dialog-frame-opt-padding;
+    }
+}
+
+/* Animations */
+
+.#{$selector} {
+    &-enter-active {
+        transition: opacity 0.3s;
+    }
+
+    &-leave-active {
+        transition: opacity 0s;
+    }
+
+    &-enter {
+        opacity: 0%;
+    }
+
+    &-leave-to {
+        opacity: 100%;
+    }
+}

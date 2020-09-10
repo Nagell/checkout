@@ -50,20 +50,18 @@ export default Vue.extend({
         }
     },
 
-    watch: {
-        toPay: function(val: null | money) {
-            if (val !== null) {
-                this.amountToPay = val.getAmount() / 100
+    mounted() {
+        if (this.toPay !== null) {
+            this.amountToPay = this.toPay.getAmount() / 100
 
-                this.countPossiblePayments(this.amountToPay)
-                    .then(this.reduceResults)
-                    .then(this.choseBestResults)
-                    .then(results => {
-                        this.resultsToRender = results
-                    })
-                    .catch(error => this.$devLog.log(error))
-            }
-        },
+            this.countPossiblePayments(this.amountToPay)
+                .then(this.reduceResults)
+                .then(this.choseBestResults)
+                .then(results => {
+                    this.resultsToRender = results
+                })
+                .catch(error => this.$devLog.log(error))
+        }
     },
 
     methods: {

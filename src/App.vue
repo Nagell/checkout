@@ -1,5 +1,19 @@
 <template>
     <div id="app" class="c-layout">
+        <transition name="c-dialog">
+            <dialog-frame v-if="rest" title="Rest" @close-dialog="closeRestDialog">
+                <template name="">
+                    <input-field
+                        v-model="inputRest"
+                        id="rest"
+                        :disabled="true"
+                        :is-custom-v-model="true"
+                        :prefix="rest ? rest.getCurrency().symbol : ''"
+                        label="Rest"
+                    />
+                </template>
+            </dialog-frame>
+        </transition>
         <div class="c-layout__head">
             <head-menu
                 :tabs="tabs"
@@ -15,6 +29,7 @@
                 v-show="tab.id === activeTab"
                 v-for="tab in tabs"
                 :tab-id="tab.id"
+                @set-rest="setRest"
             />
         </div>
     </div>
@@ -25,16 +40,22 @@ import '@/assets/scss/main.scss'
 import Vue from 'vue'
 /* types */
 import { Tab } from '@/types'
+/* classes */
+import money from './classes/money'
 /* components */
 import HeadMenu from '@/components/HeadMenu.vue'
+import DialogFrame from '@/components/common/DialogFrame.vue'
 import Checkout from '@/views/Checkout.vue'
+import InputField from '@/components/common/InputField.vue'
 
 export default Vue.extend({
     name: 'app',
 
     components: {
         HeadMenu,
+        DialogFrame,
         Checkout,
+        InputField,
     },
 
     data() {
@@ -42,7 +63,17 @@ export default Vue.extend({
             tabs: [] as Tab[],
             activeTab: null as number | null,
             tabIndex: 0 as number,
+            rest: null as null | money,
+            restDialogOpened: false,
         }
+    },
+
+    computed: {
+        inputRest: {
+            get(): string | null {
+                return this.rest ? this.rest.getFormatted() : null
+            },
+        },
     },
 
     mounted() {
@@ -80,6 +111,21 @@ export default Vue.extend({
                 this.activeTab = this.tabs[nextTabIndex].id
             } else if (this.tabs[previousTabIndex] !== undefined) {
                 this.activeTab = this.tabs[previousTabIndex].id
+            }
+        },
+
+        setRest(val: money) {
+            this.rest = val
+        },
+
+        closeRestDialog() {
+            this.rest = null
+
+            if (this.activeTab !== null) {
+                this.removeTab(this.activeTab)
+            }
+            if (this.tabs.length === 0) {
+                this.addCheckoutTab()
             }
         },
     },
