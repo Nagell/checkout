@@ -41,18 +41,22 @@ $selector: $component-checkout-namespace-var-checkout;
 
     &__payments {
         position: relative;
+
         flex-shrink: 1;
 
         width: 100%;
         height: $component-checkout-opt-payment-height;
 
+        /* Animation */
         &-enter-active,
         &-leave-active {
             transition: height 0.5s;
         }
+
         &-enter {
             height: 0;
         }
+
         &-leave-to {
             height: $component-checkout-opt-payment-height;
         }
@@ -105,7 +109,6 @@ $selector: $component-checkout-namespace-var-checkout;
         width: 100%;
         height: 100%;
         padding: 0 $component-checkout-opt-padding;
-
         > * {
             float: left;
 
@@ -136,7 +139,6 @@ $selector: $component-checkout-namespace-var-checkout;
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
-
         > button {
             font-size: $iota-global-font-size-ml;
 
@@ -155,6 +157,24 @@ $selector: $component-checkout-namespace-var-checkout;
             &:disabled {
                 background-color: map-get($checkout-colors, s3);
             }
+        }
+    }
+}
+
+/* Animations */
+.#{$selector} {
+    &__payments {
+        &-enter-active,
+        &-leave-active {
+            transition: height 0.5s;
+        }
+
+        &-enter {
+            height: 0;
+        }
+
+        &-leave-to {
+            height: $component-checkout-opt-payment-height;
         }
     }
 }

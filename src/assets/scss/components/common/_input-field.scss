@@ -21,7 +21,7 @@ $selector: $component-input-field-namespace-var-input-field;
 .#{$selector} {
     position: relative;
 
-    margin: 0.25 * $component-input-field-opt-margin auto 0;
+    margin: .25 * $component-input-field-opt-margin auto 0;
 
     > input {
         font-family: $component-input-field-opt-font-face;
@@ -29,7 +29,7 @@ $selector: $component-input-field-namespace-var-input-field;
 
         width: 38 * $iota-global-gutter-default;
         padding: 1.5 * $component-input-field-opt-padding 1.5 * $component-input-field-opt-padding
-            1.5 * $component-input-field-opt-padding 16 * $component-input-field-opt-padding;
+        1.5 * $component-input-field-opt-padding 16 * $component-input-field-opt-padding;
 
         text-align: left;
 
@@ -60,9 +60,9 @@ $selector: $component-input-field-namespace-var-input-field;
         font-size: $iota-global-font-size-xs;
 
         position: absolute;
+        z-index: 10;
         top: $component-input-field-opt-padding;
         left: $component-input-field-opt-padding;
-        z-index: 10;
     }
 
     > span {
@@ -70,9 +70,9 @@ $selector: $component-input-field-namespace-var-input-field;
         font-size: $iota-global-font-size-xxl;
 
         position: absolute;
+        z-index: 10;
         top: 2 * $iota-global-gutter-default;
         left: 13.5 * $iota-global-gutter-default;
-        z-index: 10;
     }
 
     &.transparent {

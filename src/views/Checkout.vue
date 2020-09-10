@@ -4,7 +4,6 @@
             <counters
                 :to-pay="toPay"
                 :payment="payment"
-                :rest="rest"
                 @set-to-pay="setToPay"
                 @confirm-to-pay="confirmToPay"
             />
@@ -23,11 +22,14 @@
                 <div class="c-checkout__payments-content">
                     <div class="c-checkout__empty" />
                     <div class="c-checkout__samples">
-                        <sample-payments
-                            :to-pay="toPay"
-                            :tab-id="tabId"
-                            @key-clicked="keyClicked"
-                        />
+                        <transition name="c-sample-payments">
+                            <sample-payments
+                                v-if="showSamplePayments"
+                                :to-pay="toPay"
+                                :tab-id="tabId"
+                                @key-clicked="keyClicked"
+                            />
+                        </transition>
                     </div>
                     <div class="c-checkout__keyboard">
                         <keyboard @key-clicked="keyClicked" />
@@ -78,8 +80,9 @@ export default Vue.extend({
             payment: null as null | money,
             rest: null as null | money,
             tempAmount: '' as string,
-            showKeyboard: false,
-            currentField: 'toPay',
+            showKeyboard: false as boolean,
+            showSamplePayments: false as boolean,
+            currentField: 'toPay' as string,
         }
     },
 
@@ -101,10 +104,9 @@ export default Vue.extend({
 
             if (!sample) {
                 if (key !== 'backspace') {
-                    amount = amount + payload.value
+                    amount += payload.value
                 } else {
                     amount = amount.slice(0, -1)
-                    this.rest = null
                 }
             } else {
                 amount = key
@@ -130,6 +132,7 @@ export default Vue.extend({
             this.currentField = 'payment'
             this.tempAmount = ''
             this.toPay = new money(val)
+            this.showSamplePayments = true
         },
 
         pay(): void {
@@ -141,6 +144,10 @@ export default Vue.extend({
                           this.toPay
                       )
                     : null
+
+            if (this.rest !== null) {
+                this.$emit('set-rest', this.rest)
+            }
         },
     },
 })

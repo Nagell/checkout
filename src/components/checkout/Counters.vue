@@ -24,15 +24,6 @@
                 :prefix="payment ? payment.getCurrency().symbol : ''"
                 label="Gegeben"
             />
-            <input-field
-                v-model="inputRest"
-                id="rest"
-                v-if="rest"
-                :disabled="true"
-                :is-custom-v-model="true"
-                :prefix="rest ? rest.getCurrency().symbol : ''"
-                label="Rest"
-            />
         </div>
     </div>
 </template>
@@ -74,14 +65,6 @@ export default Vue.extend({
             default: null,
             required: false,
         },
-        /**
-         * Rest money which has to be payed out
-         */
-        rest: {
-            type: Object as PropType<null | money>,
-            default: null,
-            required: false,
-        },
     },
 
     data() {
@@ -92,10 +75,6 @@ export default Vue.extend({
     },
 
     computed: {
-        nonRestStyle(): string[] {
-            return ['c-input-field', this.rest ? 'transparent' : '']
-        },
-
         inputToPay: {
             get(): string {
                 return this.tempToPay
@@ -111,12 +90,6 @@ export default Vue.extend({
         inputPayment: {
             get(): string | null {
                 return this.payment ? this.payment.getFormatted() : null
-            },
-        },
-
-        inputRest: {
-            get(): string | null {
-                return this.rest ? this.rest.getFormatted() : null
             },
         },
     },
