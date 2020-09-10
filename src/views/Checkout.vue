@@ -1,10 +1,16 @@
 <template>
     <div class="c-checkout">
         <div class="c-checkout__counters">
-            <counters :payment="payment" :rest="rest" @set-to-pay="setToPay" />
+            <counters
+                :to-pay="toPay"
+                :payment="payment"
+                :rest="rest"
+                @set-to-pay="setToPay"
+                @confirm-to-pay="confirmToPay"
+            />
         </div>
         <transition name="c-checkout__payments">
-            <div v-show="toPay" class="c-checkout__payments">
+            <div v-show="showKeyboard" class="c-checkout__payments">
                 <div class="c-checkout__payments-tabs">
                     <ul>
                         <li class="active">Bar</li>
@@ -70,8 +76,10 @@ export default Vue.extend({
         return {
             toPay: null as null | money,
             payment: null as null | money,
-            tempPayment: '' as string,
             rest: null as null | money,
+            tempAmount: '' as string,
+            showKeyboard: false,
+            currentField: 'toPay',
         }
     },
 
@@ -81,28 +89,46 @@ export default Vue.extend({
         },
     },
 
+    mounted() {
+        this.showKeyboard = true
+    },
+
     methods: {
         keyClicked(payload: KeyClicked): void {
             let key = payload.value,
                 sample = payload.sample,
-                payment = this.tempPayment
+                amount = this.tempAmount
 
             if (!sample) {
                 if (key !== 'backspace') {
-                    payment = payment + payload.value
+                    amount = amount + payload.value
                 } else {
-                    payment = payment.slice(0, -1)
+                    amount = amount.slice(0, -1)
                     this.rest = null
                 }
             } else {
-                payment = key
+                amount = key
             }
 
-            this.tempPayment = payment
-            this.payment = new money(payment, true)
+            this.tempAmount = amount
+
+            switch (this.currentField) {
+                case 'toPay':
+                    this.toPay = new money(amount, true)
+                    break
+                case 'payment':
+                    this.payment = new money(amount, true)
+                    break
+            }
         },
 
-        setToPay(val: string): void {
+        setToPay(val: string) {
+            this.tempAmount = val ? new money(val, true).getAmount().toString() : ''
+        },
+
+        confirmToPay(val: string): void {
+            this.currentField = 'payment'
+            this.tempAmount = ''
             this.toPay = new money(val)
         },
 
