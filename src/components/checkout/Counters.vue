@@ -2,7 +2,7 @@
     <div class="c-counters">
         <div class="c-counters__container">
             <input-field
-                v-model="toPay"
+                v-model="inputToPay"
                 id="to-pay"
                 :focus-on-mount="true"
                 :validate="
@@ -11,9 +11,10 @@
                     }
                 "
                 :is-custom-v-model="true"
+                :disabled="disableToPay"
                 prefix="€"
                 label="Zu zahlen"
-                @key-down="toPayConfirmed"
+                @key-down="keyDown"
             />
             <input-field
                 v-model="inputPayment"
@@ -58,6 +59,14 @@ export default Vue.extend({
 
     props: {
         /**
+         * Amount of money to pay
+         */
+        toPay: {
+            type: Object as PropType<null | money>,
+            default: null,
+            required: false,
+        },
+        /**
          * Amount of payed money
          */
         payment: {
@@ -78,6 +87,7 @@ export default Vue.extend({
     data() {
         return {
             tempToPay: '' as string,
+            disableToPay: false as boolean,
         }
     },
 
@@ -86,11 +96,12 @@ export default Vue.extend({
             return ['c-input-field', this.rest ? 'transparent' : '']
         },
 
-        toPay: {
+        inputToPay: {
             get(): string {
                 return this.tempToPay
             },
             set(payload: InputPayload) {
+                this.$emit('set-to-pay', payload.value)
                 if (!payload.error && typeof payload.value === 'string') {
                     this.tempToPay = payload.value
                 }
@@ -109,11 +120,22 @@ export default Vue.extend({
             },
         },
     },
+
+    watch: {
+        toPay: function(val: null | money) {
+            this.tempToPay =
+                val !== null
+                    ? new money(val.getAmount(), true, val.getCurrency()).getFormatted()
+                    : ''
+        },
+    },
+
     methods: {
-        toPayConfirmed(e: KeyboardEvent): void {
+        keyDown(e: KeyboardEvent): void {
             if (e.key === 'Enter') {
                 this.tempToPay = new money(this.tempToPay.toString()).getFormatted()
-                this.$emit('set-to-pay', this.tempToPay)
+                this.$emit('confirm-to-pay', this.tempToPay)
+                this.disableToPay = true
             }
         },
     },
