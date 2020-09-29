@@ -1,5 +1,7 @@
 # checkout
 
+## [Demo](https://checkout-money-operations.web.app/) - open the console in it to see more
+
 ## Project setup
 
 ```
