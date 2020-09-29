@@ -2,6 +2,13 @@
 
 ## [Demo](https://checkout-money-operations.web.app/) - open the console in it to see more
 
+### Instructions for the demo
+
+1. Fill out the first field with the key block on the bottom
+2. Hit Enter in the first field
+3. Fill out the second field with the key block on the bottom or sample payments
+4. Hit the 'pay'(Zahlen) button on the bottom of the page
+
 ## Project setup
 
 ```
